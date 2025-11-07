@@ -27,56 +27,103 @@
             background: #475569; /* slate-600 */
         }
 
+        /* NEW: Subtle fade-in for main content on load */
+        @keyframes main-fade-in {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        /* End of new styles */
+
         /* Keyframes for name animation */
         @keyframes text-shadow-pulse {
             0% {
-                text-shadow: 0 0 5px rgba(255, 255, 255, 0.4);
+                text-shadow: 0 0 5px rgba(255, 255, 255, 0.5), 0 0 10px rgba(34, 211, 238, 0.3);
             }
             50% {
-                text-shadow: 0 0 15px rgba(255, 255, 255, 0.8), 0 0 25px rgba(59, 130, 246, 0.6); /* blue-500 */
+                text-shadow: 0 0 10px rgba(255, 255, 255, 0.7), 0 0 20px rgba(34, 211, 238, 0.7), 0 0 35px rgba(34, 211, 238, 0.5), 0 0 50px rgba(59, 130, 246, 0.3);
             }
             100% {
-                text-shadow: 0 0 5px rgba(255, 255, 255, 0.4);
+                text-shadow: 0 0 5px rgba(255, 255, 255, 0.5), 0 0 10px rgba(34, 211, 238, 0.3);
             }
         }
 
-        /* Apply animation to name - Slower */
+        /* Apply animation to name */
         .animated-name {
             animation: text-shadow-pulse 5s infinite ease-in-out;
         }
 
-        /* Keyframes for button bounce */
-        @keyframes button-initial-bounce {
+        /* Keyframes for header bloom */
+        @keyframes header-bloom-pulse {
             0% {
-                transform: translateY(10px);
-                opacity: 0;
-            }
-            60% {
-                transform: translateY(-5px);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        @keyframes button-hover-bounce {
-            0%, 100% {
-                transform: translateY(0);
+                text-shadow: 0 0 4px rgba(255, 255, 255, 0.4), 0 0 8px rgba(34, 211, 238, 0.2);
             }
             50% {
-                transform: translateY(-5px);
+                text-shadow: 0 0 8px rgba(255, 255, 255, 0.6), 0 0 16px rgba(34, 211, 238, 0.5), 0 0 25px rgba(59, 130, 246, 0.3);
+            }
+            100% {
+                text-shadow: 0 0 4px rgba(255, 255, 255, 0.4), 0 0 8px rgba(34, 211, 238, 0.2);
             }
         }
 
-        .animated-button-initial {
-            animation: button-initial-bounce 0.8s ease-out forwards;
+        /* Apply animation to headers */
+        .animated-header-bloom {
+            animation: header-bloom-pulse 5s infinite ease-in-out;
         }
 
-        .animated-button-hover:hover {
-            animation: button-hover-bounce 0.4s ease-in-out;
+        /* Apply bloom to About Me image */
+        .animated-image-bloom {
+            animation: skill-card-bloom-pulse 4s infinite ease-in-out;
+            border-radius: 8px; /* Ensure shadow respects the rounded corners */
         }
+
+        /* NEW: Keyframes for RED bloom pulse - NOW BLUE */
+        @keyframes skill-card-bloom-pulse {
+            0% {
+                box-shadow: 0 0 10px rgba(34, 211, 238, 0.2), 0 0 5px rgba(59, 130, 246, 0.1);
+            }
+            50% {
+                box-shadow: 0 0 20px rgba(34, 211, 238, 0.6), 0 0 30px rgba(59, 130, 246, 0.4);
+            }
+            100% {
+                box-shadow: 0 0 10px rgba(34, 211, 238, 0.2), 0 0 5px rgba(59, 130, 246, 0.1);
+            }
+        }
+
+        /* NEW: Class for skill cards with red bloom - NOW BLUE */
+        .skill-card {
+            background-color: #1e293b; /* slate-800 */
+            padding: 24px;
+            border-radius: 8px;
+            border: 1px solid #334155; /* slate-700/50 */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            animation: skill-card-bloom-pulse 4s infinite ease-in-out;
+            transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
+        }
+
+        .skill-card:hover {
+            transform: translateY(-5px);
+            /* Intensify the red bloom on hover - NOW BLUE */
+            box-shadow: 0 0 25px rgba(34, 211, 238, 0.8), 0 0 40px rgba(59, 130, 246, 0.6);
+        }
+
+        /* NEW: Typewriter cursor */
+        .typing {
+            /* Add a blinking cursor at the end */
+            border-right: 2px solid rgba(34, 211, 238, 0.75); /* cyan-400 */
+            animation: blink-caret 0.75s step-end infinite;
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: rgba(34, 211, 238, 0.75); }
+        }
+
 
         /* Modal styles (for Project Modal) */
         .modal {
@@ -104,12 +151,6 @@
             animation: modal-fade-in 0.3s ease-out;
         }
 
-        /* Project Modal is larger */
-        #projectModal .modal-content {
-            max-width: 700px;
-            margin: 5% auto;
-        }
-
         @keyframes modal-fade-in {
             from {
                 opacity: 0;
@@ -133,10 +174,6 @@
             font-weight: 600;
             color: #e2e8f0; /* slate-200 */
         }
-        /* Project modal title */
-        #projectModalTitle {
-            color: #e2e8f0; /* slate-200 */
-        }
 
         .modal-close {
             color: #94a3b8; /* slate-400 */
@@ -151,17 +188,6 @@
         }
         .modal-body {
             padding-top: 16px;
-        }
-
-        /* Project modal tags - Reverted to teal */
-        .modal-tag {
-            background-color: #0f766e; /* teal-700 */
-            color: #99f6e4; /* teal-200 */
-            font-size: 0.75rem;
-            font-weight: 500;
-            padding: 4px 10px;
-            border-radius: 9999px;
-            display: inline-block;
         }
 
         /* Removed floating-image animation */
@@ -187,12 +213,6 @@
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3), 0 0 15px rgba(34, 211, 238, 0.2); /* shadow-lg and cyan glow */
         }
 
-        /* Project card changes */
-        .project-card {
-            cursor: pointer;
-            width: 320px; /* Fixed width for scrolling */
-            flex-shrink: 0; /* Prevents cards from shrinking */
-        }
 
         /* Styles for the new home animation */
         #home-text-content {
@@ -246,29 +266,28 @@
                     <div class="ml-10 flex items-baseline space-x-4">
                         <a href="#about" class="px-3 py-2 rounded-md text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-cyan-400 transition-colors">About</a>
                         <a href="#skills" class="px-3 py-2 rounded-md text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-cyan-400 transition-colors">Skills</a>
-                        <a href="#projects" class="px-3 py-2 rounded-md text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-cyan-400 transition-colors">Projects</a>
+                        <!-- REMOVED: Project link -->
                         <a href="#certifications" class="px-3 py-2 rounded-md text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-cyan-400 transition-colors">Certs</a>
+                        <a href="#projects" class="px-3 py-2 rounded-md text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-cyan-400 transition-colors">Projects</a>
                         <a href="#contact" class="px-3 py-2 rounded-md text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-cyan-400 transition-colors">Contact</a>
                     </div>
                 </div>
                 
                 <div class="-mr-2 flex md:hidden">
-                    <!-- Mobile menu button -->
-                </div>
+                    <!-- Mobile menu button --></div>
             </div>
         </nav>
     </header>
 
     
-    <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- MODIFIED: Added inline style for fade-in animation -->
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8" style="opacity: 0; animation: main-fade-in 1s ease-out 0.2s forwards;">
 
         
         <section id="home-sticky-parent" class="relative" style="height: 200vh;">
             
-            <!-- Sticky Container -->
-            <div id="home-sticky-container" class="sticky top-0 h-screen overflow-hidden">
-                <!-- Abstract background shape -->
-                <svg class="absolute -top-1/4 -left-1/4 w-[150%] h-[150%] text-slate-800 opacity-20 z-0" fill="none" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+            <!-- Sticky Container --><div id="home-sticky-container" class="sticky top-0 h-screen overflow-hidden">
+                <!-- Abstract background shape --><svg class="absolute -top-1/4 -left-1/4 w-[150%] h-[150%] text-slate-800 opacity-20 z-0" fill="none" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
                     <path d="M0,50 Q25,25 50,50 T100,50" stroke="currentColor" stroke-width="0.5"/>
                     <path d="M0,50 Q25,75 50,50 T100,50" stroke="currentColor" stroke-width="0.5"/>
                     <path d="M50,0 Q25,25 50,50 T50,100" stroke="currentColor" stroke-width="0.5"/>
@@ -278,9 +297,7 @@
                     <circle cx="50" cy="50" r="40" stroke="currentColor" stroke-width="0.5"/>
                 </svg>
 
-                <!-- Content -->
-                <div id="home-text-content" class="absolute z-20 px-4"> <!-- Changed z-10 to z-20 -->
-                    <span class="text-sm font-semibold text-cyan-400 uppercase tracking-wider">Ethical Hacker & Cybersecurity Professional</span>
+                <!-- Content --><div id="home-text-content" class="absolute z-20 px-4"> <!-- Changed z-10 to z-20 --><span class="text-sm font-semibold text-cyan-400 uppercase tracking-wider">Ethical Hacker & Cybersecurity Professional</span>
                     <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white mt-4 mb-6 leading-tight animated-name">
                         Hi, I'm<br> MD Nure Alam
                     </h1>
@@ -288,17 +305,15 @@
                         I secure digital assets by identifying and mitigating vulnerabilities before malicious actors can exploit them.
                     </p>
                     <div class="flex space-x-4 justify-center md:justify-start">
-                        <a href="#projects" class="inline-block bg-cyan-4000 text-white font-semibold px-6 py-3 rounded-lg shadow-lg hover:bg-cyan-600 transition-transform hover:scale-105 animated-button-initial animated-button-hover">
-                            View My Projects
+                        <a href="#about" class="inline-block bg-cyan-4000 text-white font-semibold px-6 py-3 rounded-lg shadow-lg hover:bg-cyan-600 transition-transform hover:scale-105 animated-button-initial animated-button-hover">
+                            View My Work
                         </a>
                         
                         </a>
                     </div>
                 </div>
 
-                <!-- Image -->
-                <div id="home-image-wrapper" class="absolute z-10"> <!-- Stays z-10 -->
-                    <div class="w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 bg-slate-800 rounded-full border-4 border-cyan-500/30 shadow-2xl flex items-center justify-center overflow-hidden">
+                <!-- Image --><div id="home-image-wrapper" class="absolute z-10"> <!-- Stays z-10 --><div class="w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 bg-slate-800 rounded-full border-4 border-cyan-500/30 shadow-2xl flex items-center justify-center overflow-hidden" style="animation: skill-card-bloom-pulse 4s infinite ease-in-out;">
                         <img src="https://i.imgur.com/tP7qZbB.png" alt="MD Nure Alam" class="rounded-full w-full h-full object-cover">
                     </div>
                 </div>
@@ -307,21 +322,21 @@
 
         
         <section id="about" class="py-24 border-t border-slate-700/50 scroll-reveal">
-            <h2 class="text-3xl font-bold text-center text-white mb-4">About Me</h2>
+            <h2 class="text-3xl font-bold text-center text-white mb-4 animated-header-bloom">About Me</h2>
             <p class="text-cyan-400 text-center text-sm font-semibold mb-12">My Professional Story</p>
 
             <div class="grid grid-cols-1 md:grid-cols-5 gap-12 items-center">
                 <div class="md:col-span-2 flex justify-center">
-                    <img src="https://i.imgur.com/gYq8vM7.png" alt="MD Nure Alam professional headshot" class="rounded-lg shadow-xl object-cover w-full h-auto max-h-96 object-top">
+                    <img src="https://i.imgur.com/5Qru5PG.png" alt="MD Nure Alam professional headshot" class="rounded-lg shadow-xl object-cover w-full h-auto max-h-96 object-top animated-image-bloom">
                 </div>
                 <div class="md:col-span-3 text-slate-400 text-lg space-y-4">
-                    <p>
+                    <p class="typewriter-text">
                         Hello! I'm a passionate and detail-oriented Ethical Hacker dedicated to strengthening digital defenses. With a deep interest in offensive security, I specialize in proactively identifying security flaws in web applications, networks, and systems.
                     </p>
-                    <p>
+                    <p class="typewriter-text">
                         My methodology is built on a <strong class="text-slate-200">"think like an attacker"</strong> mindset to provide a <strong class="text-slate-200">"defend like an expert"</strong> solution. I am committed to a culture of continuous learning to stay ahead of emerging threats and am driven by the challenge of solving complex security puzzles.
                     </p>
-                    <p>
+                    <p class="typewriter-text">
                         My goal is to help organizations protect their valuable data and maintain a robust security posture.
                     </p>
                 </div>
@@ -330,12 +345,16 @@
 
         
         <section id="skills" class="py-24 border-t border-slate-700/50 scroll-reveal">
-            <h2 class="text-3xl font-bold text-center text-white mb-4">My Technical Toolkit</h2>
-            <p class="text-cyan-400 text-center text-sm font-semibold mb-12">Technologies, Tools, and Methodologies</p>
+            
+            <!-- EDIT: Wrapped the header in a skill-card div --><div class="skill-card mb-12">
+                <h2 class="text-3xl font-bold text-center text-white mb-4">My Technical Toolkit</h2>
+                <p class="text-cyan-400 text-center text-sm font-semibold">Technologies, Tools, and Methodologies</p>
+            </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
                 
-                <div class="bg-slate-800 p-6 rounded-lg shadow-lg border border-slate-700/50 interactive-card">
+                <div class="skill-card">
                     <h3 class="text-xl font-semibold text-white mb-4">Penetration Testing</h3>
                     <ul class="list-disc list-inside text-slate-400 space-y-2">
                         <li>Web Application Pentesting (OWASP Top 10)</li>
@@ -346,7 +365,7 @@
                     </ul>
                 </div>
                 
-                <div class="bg-slate-800 p-6 rounded-lg shadow-lg border border-slate-700/50 interactive-card">
+                <div class="skill-card">
                     <h3 class="text-xl font-semibold text-white mb-4">Security Tools</h3>
                     <ul class="list-disc list-inside text-slate-400 space-y-2">
                         <li><strong class="text-slate-300">Scanning:</strong> Nmap, Nessus, OpenVAS</li>
@@ -356,7 +375,7 @@
                     </ul>
                 </div>
                 
-                <div class="bg-slate-800 p-6 rounded-lg shadow-lg border border-slate-700/50 interactive-card">
+                <div class="skill-card">
                     <h3 class="text-xl font-semibold text-white mb-4">Key Knowledge Areas</h3>
                     <ul class="list-disc list-inside text-slate-400 space-y-2">
                         <li><strong class="text-slate-300">Scripting:</strong> Python, Bash, PowerShell</li>
@@ -366,115 +385,22 @@
                         <li>Cryptography Principles</li>
                     </ul>
                 </div>
+                
+                <div class="skill-card">
+                    <h3 class="text-xl font-semibold text-white mb-4">Compliance & Frameworks</h3>
+                    <ul class="list-disc list-inside text-slate-400 space-y-2">
+                        <li>NIST Cybersecurity Framework</li>
+                        <li>ISO 27001/27002</li>
+                        <li>PCI-DSS (Payment Card Industry)</li>
+                        <li>MITRE ATT&CK Framework</li>
+                        <li>Risk Management Frameworks (RMF)</li>
+                    </ul>
+                </div>
             </div>
         </section>
 
         
-        <section id="projects" class="py-24 border-t border-slate-700/50 scroll-reveal">
-            <h2 class="text-3xl font-bold text-center text-white mb-4">Portfolio & Projects</h2>
-            <p class="text-cyan-400 text-center text-sm font-semibold mb-12">Proof of Concept & Write-ups (Scrollable)</p>
-
-            <!-- Horizontally scrolling container -->
-            <div class="flex overflow-x-auto gap-8 pb-4">
-                
-                
-                <div class="bg-slate-800 rounded-lg shadow-lg overflow-hidden flex flex-col border border-slate-700/50 project-card interactive-card"
-                     onclick="showProjectModal(
-                        'Vulnerability Analysis of XYZ App',
-                        'https://placehold.co/600x400/1e293b/94a3b8?text=Project+1',
-                        'Performed a full-scope web application penetration test, identifying a critical SQLi vulnerability and a stored XSS flaw.',
-                        '[\"Burp Suite\", \"SQLMap\", \"OWASP\"]',
-                        '#'
-                     )">
-                    <img src="https://placehold.co/600x400/1e293b/94a3b8?text=Project+1" alt="Project 1" class="w-full h-48 object-cover">
-                    <div class="p-6 flex flex-col flex-grow">
-                        <h3 class="text-xl font-semibold text-white mb-2">Vulnerability Analysis of XYZ App</h3>
-                        <p class="text-slate-400 text-sm mt-auto">Click to see details...</p>
-                    </div>
-                </div>
-
-                
-                <div class="bg-slate-800 rounded-lg shadow-lg overflow-hidden flex flex-col border border-slate-700/50 project-card interactive-card"
-                     onclick="showProjectModal(
-                        'Hack The Box: &quot;Machine Name&quot; Write-up',
-                        'https://placehold.co/600x400/1e293b/94a3b8?text=Project+2',
-                        'Gained root access on a &quot;Hard&quot; rated box, involving privilege escalation via a misconfigured SUID binary.',
-                        '[\"Nmap\", \"Metasploit\", \"PrivEsc\"]',
-                        '#'
-                     )">
-                    <img src="https://placehold.co/600x400/1e293b/94a3b8?text=Project+2" alt="Project 2" class="w-full h-48 object-cover">
-                    <div class="p-6 flex flex-col flex-grow">
-                        <h3 class="text-xl font-semibold text-white mb-2">Hack The Box: "Machine Name" Write-up</h3>
-                        <p class="text-slate-400 text-sm mt-auto">Click to see details...</p>
-                    </div>
-                </div>
-
-                
-                <div class="bg-slate-800 rounded-lg shadow-lg overflow-hidden flex flex-col border border-slate-700/50 project-card interactive-card"
-                     onclick="showProjectModal(
-                        'Python Recon Automation Tool',
-                        'https://placehold.co/600x400/1e293b/94a3b8?text=Project+3',
-                        'Developed a script to automate subdomain enumeration and port scanning, saving time during initial recon.',
-                        '[\"Python\", \"Automation\", \"GitHub\"]',
-                        '#'
-                     )">
-                    <img src="https://placehold.co/600x400/1e293b/94a3b8?text=Project+3" alt="Project 3" class="w-full h-48 object-cover">
-                    <div class="p-6 flex flex-col flex-grow">
-                        <h3 class="text-xl font-semibold text-white mb-2">Python Recon Automation Tool</h3>
-                        <p class="text-slate-400 text-sm mt-auto">Click to see details...</p>
-                    </div>
-                </div>
-
-                
-                <div class="bg-slate-800 rounded-lg shadow-lg overflow-hidden flex flex-col border border-slate-700/50 project-card interactive-card"
-                     onclick="showProjectModal(
-                        'Active Directory Lab Build',
-                        'https://placehold.co/600x400/1e293b/94a3b8?text=Project+4',
-                        'Built a vulnerable Active Directory environment in Azure to practice common TTPs, from initial access (AS-REP Roasting) to Domain Admin.',
-                        '[\"Active Directory\", \"Azure\", \"BloodHound\"]',
-                        '#'
-                     )">
-                    <img src="https://placehold.co/600x400/1e293b/94a3b8?text=Project+4" alt="Project 4" class="w-full h-48 object-cover">
-                    <div class="p-6 flex flex-col flex-grow">
-                        <h3 class="text-xl font-semibold text-white mb-2">Active Directory Lab Build</h3>
-                        <p class="text-slate-400 text-sm mt-auto">Click to see details...</p>
-                    </div>
-                </div>
-
-                
-                <div class="bg-slate-800 rounded-lg shadow-lg overflow-hidden flex flex-col border border-slate-700/50 project-card interactive-card"
-                     onclick="showProjectModal(
-                        'Wireless Security Assessment',
-                        'https://placehold.co/600x400/1e293b/94a3b8?text=Project+5',
-                        'Performed a security assessment on a WPA2-PSK network, successfully capturing the 4-way handshake and cracking the pre-shared key.',
-                        '[\"Aircrack-ng\", \"Hashcat\", \"Wireless\"]',
-                        '#'
-                     )">
-                    <img src="https://placehold.co/600x400/1e293b/94a3b8?text=Project+5" alt="Project 5" class="w-full h-48 object-cover">
-                    <div class="p-6 flex flex-col flex-grow">
-                        <h3 class="text-xl font-semibold text-white mb-2">Wireless Security Assessment</h3>
-                        <p class="text-slate-400 text-sm mt-auto">Click to see details...</p>
-                    </div>
-                </div>
-
-                
-                <div class="bg-slate-800 rounded-lg shadow-lg overflow-hidden flex flex-col border border-slate-700/50 project-card interactive-card"
-                     onclick="showProjectModal(
-                        'Phishing Campaign Simulation',
-                        'https://placehold.co/600x400/1e293b/94a3b8?text=Project+6',
-                        'Conducted a simulated phishing campaign using Gophish to test user awareness, followed by a report on findings and recommendations.',
-                        '[\"Social Engineering\", \"Gophish\", \"Reporting\"]',
-                        '#'
-                     )">
-                    <img src="https://placehold.co/600x400/1e293b/94a3b8?text=Project+6" alt="Project 6" class="w-full h-48 object-cover">
-                    <div class="p-6 flex flex-col flex-grow">
-                        <h3 class="text-xl font-semibold text-white mb-2">Phishing Campaign Simulation</h3>
-                        <p class="text-slate-400 text-sm mt-auto">Click to see details...</p>
-                    </div>
-                </div>
-
-            </div>
-        </section>
+        <!-- REMOVED: Entire Projects Section -->
 
         
         <section id="certifications" class="py-24 border-t border-slate-700/50 scroll-reveal">
@@ -496,18 +422,89 @@ Input:
                     </div>
                 </div>
                 
-                <div class="bg-slate-800 p-6 rounded-lg shadow-lg flex items-center space-x-6 border border-slate-700/50 interactive-card">
+                <!-- NEW: Cisco Ethical Hacker Cert --><div class="bg-slate-800 p-6 rounded-lg shadow-lg flex items-center space-x-6 border border-slate-700/50 interactive-card"
+                     onclick="showImageModal('https://i.imgur.com/VunLnTf.png')"
+                     style="cursor: pointer;">
                     <div class="flex-shrink-0 w-16 h-16 bg-slate-700 rounded-full flex items-center justify-center overflow-hidden">
-                        
-                        <img src="https://placehold.co/100x100/1e293b/94a3b8?text=Metropolitan+University+Logo" alt="Metropolitan University Logo" class="w-full h-full object-cover">
+                        <!-- EDIT: Replaced logo with user's new link --><img src="https://i.imgur.com/ktniPqS.png" alt="Cisco Logo" class="w-full h-full object-contain p-3">
                     </div>
                     <div>
-                        <h3 class="text-xl font-semibold text-white">B.Sc. in Computer Science</h3>
-                        <p class="text-slate-400">Metropolitan University</p>
+                        <h3 class="text-xl font-semibold text-white">Cisco Certified Ethical Hacker</h3>
+                        <p class="text-slate-400">Issued by: Cisco Networking Academy</p>
+                        <!-- EDIT: Update the onclick URL with your cert image --><p class="text-sm text-cyan-400">Click to view certificate</p>
                     </div>
                 </div>
+
+                <!-- NEW: Cisco Cybersecurity Cert --><div class="bg-slate-800 p-6 rounded-lg shadow-lg flex items-center space-x-6 border border-slate-700/50 interactive-card"
+                     onclick="showImageModal('https://i.imgur.com/if9arbg.png')"
+                     style="cursor: pointer;">
+                    <div class="flex-shrink-0 w-16 h-16 bg-slate-700 rounded-full flex items-center justify-center overflow-hidden">
+                        <!-- EDIT: Badge Icon replaced with user's logo link --><img src="https://i.imgur.com/ktniPqS.png" alt="Cisco Logo" class="w-full h-full object-contain p-3">
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold text-white">Introduction to Cybersecurity</h3>
+                        <p class="text-slate-400">Issued by: Cisco Networking Academy</p>
+                        <!-- EDIT: Update the onclick URL with your cert image --><p class="text-sm text-cyan-400">Click to view certificate</p>
+                    </div>
+                </div>
+                
+            
+                
+                <!-- NEW: 4th Certification with user logo -->
+                <div class="bg-slate-800 p-6 rounded-lg shadow-lg flex items-center space-x-6 border border-slate-700/50 interactive-card"
+                     onclick="showImageModal('https://i.imgur.com/5YjsW8U.png')"
+                     style="cursor: pointer;">
+                    <div class="flex-shrink-0 w-16 h-16 bg-slate-700 rounded-full flex items-center justify-center overflow-hidden">
+                        <img src="https://i.imgur.com/ZJZXCIV.png" alt="Certification Logo" class="w-full h-full object-contain p-3">
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold text-white">CSCSO Certified SME Cyber Security Officer</h3>
+                        <p class="text-slate-400">Issued by: ICTTF - Cyber Security Community</p>
+                        <p class="text-sm text-cyan-400">Click to view certificate</p>
+                    </div>
+                </div>
+                
+                <!-- REMOVED the 4th certification block for B.Sc. -->
+            </div>
+
+            
+        </section>
+
+        
+        <!-- NEW: Projects Section -->
+        <section id="projects" class="py-24 border-t border-slate-700/50 scroll-reveal">
+            <h2 class="text-3xl font-bold text-center text-white mb-4 animated-header-bloom">My Projects</h2>
+            <p class="text-cyan-400 text-center text-sm font-semibold mb-12">A gallery of my work and case studies.</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+                <!-- Project 1 -->
+                <a href="https://nurealam-cyber-specialist.github.io/Project-wise/#home" target="_blank" rel="noopener noreferrer" class="block bg-slate-800 rounded-lg shadow-lg overflow-hidden border border-slate-700/50 interactive-card animated-image-bloom">
+                    <img src="https://i.imgur.com/TptW9ww.png" alt="Project 1" class="w-full h-56 object-cover" onerror="this.src='https://placehold.co/600x400/1e293b/94a3b8?text=Project+1'">
+                    <div class="p-4">
+                        <h3 class="text-lg font-semibold text-white">WIZE App</h3>
+                    </div>
+                </a>
+
+                <!-- Project 2 -->
+                <div class="bg-slate-800 rounded-lg shadow-lg overflow-hidden border border-slate-700/50 interactive-card animated-image-bloom">
+                    <img src="https://placehold.co/600x400/1e293b/94a3b8?text=Project+2" alt="Project 2" class="w-full h-56 object-cover" onerror="this.src='https://placehold.co/600x400/1e293b/94a3b8?text=Project+2'">
+                    <div class="p-4">
+                        <h3 class="text-lg font-semibold text-white">Hack The Box Write-up</h3>
+                    </div>
+                </div>
+
+                <!-- Project 3 -->
+                <div class="bg-slate-800 rounded-lg shadow-lg overflow-hidden border border-slate-700/50 interactive-card animated-image-bloom">
+                    <img src="https://placehold.co/600x400/1e293b/94a3b8?text=Project+3" alt="Project 3" class="w-full h-56 object-cover" onerror="this.src='https://placehold.co/600x400/1e293b/94a3b8?text=Project+3'">
+                    <div class="p-4">
+                        <h3 class="text-lg font-semibold text-white">Python Recon Tool</h3>
+                    </div>
+                </div>
+
             </div>
         </section>
+        <!-- END: Projects Section -->
 
         
         <section id="contact" class="py-24 border-t border-slate-700/50 scroll-reveal">
@@ -550,23 +547,14 @@ Input:
         </div>
     </footer>
 
-    <!-- Project Modal -->
-    <div id="projectModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 id="projectModalTitle" class="modal-title">Project Title</h3>
-                <span class="modal-close" id="projectModalCloseBtn">&times;</span>
+    <!-- REMOVED: Project Modal -->
+
+    <!-- NEW: Image Modal for Certificates --><div id="imageModal" class="modal">
+        <div class="modal-content" style="max-width: 800px; padding: 12px; background-color: #0f172a;"> <!-- slate-900 --><div class="modal-header" style="border: none; padding: 0;">
+                <!-- Close button is positioned by the parent's flex-end --><span class="modal-close" id="imageModalCloseBtn" style="align-self: flex-end;">&times;</span>
             </div>
-            <div class="modal-body">
-                <img id="projectModalImage" src="" alt="Project Image" class="w-full h-64 object-cover rounded-lg mb-4">
-                <p id="projectModalDescription" class="text-slate-400 mb-4"></p>
-                <div id="projectModalTags" class="flex flex-wrap gap-2 mb-6">
-                    <!-- Tags will be injected here -->
-                </div>
-                <a id="projectModalLink" href="#" target="_blank" rel="noopener noreferrer" class="inline-flex items-center text-cyan-400 font-semibold hover:text-cyan-300">
-                    View Project / Report
-                    <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
-                </a>
+            <div class="modal-body" style="padding: 0;">
+                <img id="modalImage" src="" alt="Certificate Image" class="w-full h-auto rounded-lg">
             </div>
         </div>
     </div>
@@ -601,53 +589,97 @@ Input:
             revealObserver.observe(el);
         });
 
-        // --- MODAL SCRIPT (FOR PROJECT) ---
+        // --- MODAL SCRIPT ---
         
-        // Project Modal
-        const projectModal = document.getElementById('projectModal');
-        const projectModalCloseBtn = document.getElementById('projectModalCloseBtn');
-
-        if (projectModalCloseBtn) {
-            projectModalCloseBtn.onclick = () => projectModal.style.display = 'none';
-        }
-
         // Global close
         window.onclick = (event) => {
-            if (event.target == projectModal) {
-                projectModal.style.display = 'none';
+            // REMOVED: Project modal check
+            // MODIFIED: Added check for imageModal
+            if (event.target == imageModal) {
+                imageModal.style.display = 'none';
             }
         };
 
-        // Attach showProjectModal to window to make it accessible from inline onclick
-        window.showProjectModal = function(title, image, description, tagsString, link) {
-            document.getElementById('projectModalTitle').textContent = title;
-            document.getElementById('projectModalImage').src = image;
-            document.getElementById('projectModalDescription').textContent = description;
-            document.getElementById('projectModalLink').href = link;
+        // REMOVED: window.showProjectModal function
 
-            const tagsContainer = document.getElementById('projectModalTags');
-            tagsContainer.innerHTML = ''; // Clear old tags
-            
-            let tags = [];
-            try {
-                // Parse the JSON string passed from the onclick attribute
-                tags = JSON.parse(tagsString);
-            } catch (e) {
-                console.error("Failed to parse project tags:", e, tagsString);
-                // tags will remain an empty array
-            }
+        // --- NEW SCRIPT (FOR IMAGE MODAL) ---
+        const imageModal = document.getElementById('imageModal');
+        const imageModalCloseBtn = document.getElementById('imageModalCloseBtn');
+        const modalImage = document.getElementById('modalImage');
 
-            if (tags && Array.isArray(tags)) {
-                tags.forEach(tag => {
-                    const tagElement = document.createElement('span');
-                    tagElement.className = 'modal-tag';
-                    tagElement.textContent = tag;
-                    tagsContainer.appendChild(tagElement);
-                });
-            }
-            
-            projectModal.style.display = 'block';
+        if (imageModalCloseBtn) {
+            imageModalCloseBtn.onclick = () => imageModal.style.display = 'none';
         }
+
+        // Attach showImageModal to window
+        window.showImageModal = function(imageUrl) {
+            if (modalImage && imageModal) {
+                modalImage.src = imageUrl;
+                imageModal.style.display = 'block';
+            }
+        }
+        
+
+        // --- TYPEWRITER SCRIPT ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const aboutSection = document.getElementById('about');
+            const textElements = document.querySelectorAll('.typewriter-text');
+            
+            if (!aboutSection || textElements.length === 0) return;
+
+            // 1. Store original innerHTML (to restore formatting) and textContent (for typing)
+            const originals = Array.from(textElements).map(el => ({
+                element: el,
+                html: el.innerHTML,
+                text: el.textContent.trim().replace(/\s+/g, ' ') // Standardize whitespace
+            }));
+
+            // 2. Clear content
+            originals.forEach(o => o.element.innerHTML = '');
+
+            // 3. Set up the typing function
+            const typingSpeed = 20; // ms per character
+            const paraDelay = 300; // ms between paragraphs
+
+            async function startTyping() {
+                for (let i = 0; i < originals.length; i++) {
+                    const current = originals[i];
+                    current.element.classList.add('typing');
+                    
+                    const textToType = current.text;
+                    
+                    // Type out the text (using textContent)
+                    for (let j = 0; j < textToType.length; j++) {
+                        current.element.textContent += textToType[j];
+                        await new Promise(resolve => setTimeout(resolve, typingSpeed));
+                    }
+                    
+                    current.element.classList.remove('typing');
+                    
+                    // Restore original innerHTML to get formatting back
+                    current.element.innerHTML = current.html;
+
+                    // Wait before starting next paragraph
+                    if (i < originals.length - 1) {
+                        await new Promise(resolve => setTimeout(resolve, paraDelay));
+                    }
+                }
+            }
+
+            // 4. Set up the observer
+            const typewriterObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        startTyping();
+                        typewriterObserver.unobserve(entry.target); // Animate only once
+                    }
+                });
+            }, {
+                threshold: 0.5 // Trigger when 50% of the section is visible
+            });
+
+            typewriterObserver.observe(aboutSection);
+        });
 
 
         // --- HOME SECTION STICKY SCROLL ANIMATION ---
@@ -684,7 +716,7 @@ Input:
                 const imageLeft_start = 50; // 50% from left
 
                 // Final state (side-by-side)
-                const textTop_final = 50; // 50% from top
+                const textTop_final = 45; // 45% from top (Was 50%)
                 const textLeft_final = 35; // ~33.3% for 2/3 block
                 const imageTop_final = 50; // 50% from top
                 const imageLeft_final = 80; // ~83.3% for 1/3 block
