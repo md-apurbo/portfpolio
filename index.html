@@ -4,20 +4,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MD Nure Alam - Ethical Hacker Portfolio</title>
+    <title>MD Nure Alam - Cybersecurity Specialist</title>
     
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <script src="https://unpkg.com/lucide-react@0.395.0/dist/lucide-react.js"></script>
+    <!-- Lucide Icons (Fixed Version for Browser) -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Marked Library for Markdown Parsing -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
     <style>
-        /* Custom scrollbar (optional but nice) */
+        /* Custom scrollbar */
         ::-webkit-scrollbar {
             width: 8px;
-            height: 8px; /* Added height for horizontal scrollbar */
+            height: 8px;
         }
         ::-webkit-scrollbar-track {
-            background: #1e293b; /* slate-800 */
-            border-radius: 4px;
+            background: #0f172a; /* slate-900 */
         }
         ::-webkit-scrollbar-thumb {
             background: #334155; /* slate-700 */
@@ -27,105 +32,58 @@
             background: #475569; /* slate-600 */
         }
 
-        /* NEW: Subtle fade-in for main content on load */
+        /* Base Animation */
         @keyframes main-fade-in {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        /* End of new styles */
-
-        /* Keyframes for name animation */
-        @keyframes text-shadow-pulse {
-            0% {
-                text-shadow: 0 0 5px rgba(255, 255, 255, 0.5), 0 0 10px rgba(34, 211, 238, 0.3);
-            }
-            50% {
-                text-shadow: 0 0 10px rgba(255, 255, 255, 0.7), 0 0 20px rgba(34, 211, 238, 0.7), 0 0 35px rgba(34, 211, 238, 0.5), 0 0 50px rgba(59, 130, 246, 0.3);
-            }
-            100% {
-                text-shadow: 0 0 5px rgba(255, 255, 255, 0.5), 0 0 10px rgba(34, 211, 238, 0.3);
-            }
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Apply animation to name */
+        /* Name Glow */
+        @keyframes text-glow {
+            0%, 100% { text-shadow: 0 0 10px rgba(6, 182, 212, 0.1); }
+            50% { text-shadow: 0 0 20px rgba(6, 182, 212, 0.4); }
+        }
         .animated-name {
-            animation: text-shadow-pulse 5s infinite ease-in-out;
+            animation: text-glow 4s ease-in-out infinite;
         }
 
-        /* Keyframes for header bloom */
-        @keyframes header-bloom-pulse {
-            0% {
-                text-shadow: 0 0 4px rgba(255, 255, 255, 0.4), 0 0 8px rgba(34, 211, 238, 0.2);
-            }
-            50% {
-                text-shadow: 0 0 8px rgba(255, 255, 255, 0.6), 0 0 16px rgba(34, 211, 238, 0.5), 0 0 25px rgba(59, 130, 246, 0.3);
-            }
-            100% {
-                text-shadow: 0 0 4px rgba(255, 255, 255, 0.4), 0 0 8px rgba(34, 211, 238, 0.2);
-            }
+        /* Card Hover Effects - Glassmorphism */
+        .glass-card {
+            background: rgba(30, 41, 59, 0.7); /* slate-800 with opacity */
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(51, 65, 85, 0.5); /* slate-700 */
+            transition: all 0.3s ease;
+        }
+        .glass-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(34, 211, 238, 0.5); /* cyan-400 */
+            box-shadow: 0 10px 30px -10px rgba(6, 182, 212, 0.2);
         }
 
-        /* Apply animation to headers */
-        .animated-header-bloom {
-            animation: header-bloom-pulse 5s infinite ease-in-out;
+        /* Terminal Style Input */
+        .terminal-input {
+            background: #020617;
+            border: 1px solid #1e293b;
+            color: #22d3ee;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        .terminal-input:focus {
+            outline: none;
+            border-color: #22d3ee;
+            box-shadow: 0 0 10px rgba(34, 211, 238, 0.2);
         }
 
-        /* Apply bloom to About Me image */
-        .animated-image-bloom {
-            animation: skill-card-bloom-pulse 4s infinite ease-in-out;
-            border-radius: 8px; /* Ensure shadow respects the rounded corners */
+        /* Typewriter Cursor */
+        .typing-cursor::after {
+            content: '|';
+            color: #22d3ee;
+            animation: blink 0.75s step-end infinite;
+        }
+        @keyframes blink {
+            50% { opacity: 0; }
         }
 
-        /* NEW: Keyframes for RED bloom pulse - NOW BLUE */
-        @keyframes skill-card-bloom-pulse {
-            0% {
-                box-shadow: 0 0 10px rgba(34, 211, 238, 0.2), 0 0 5px rgba(59, 130, 246, 0.1);
-            }
-            50% {
-                box-shadow: 0 0 20px rgba(34, 211, 238, 0.6), 0 0 30px rgba(59, 130, 246, 0.4);
-            }
-            100% {
-                box-shadow: 0 0 10px rgba(34, 211, 238, 0.2), 0 0 5px rgba(59, 130, 246, 0.1);
-            }
-        }
-
-        /* NEW: Class for skill cards with red bloom - NOW BLUE */
-        .skill-card {
-            background-color: #1e293b; /* slate-800 */
-            padding: 24px;
-            border-radius: 8px;
-            border: 1px solid #334155; /* slate-700/50 */
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            animation: skill-card-bloom-pulse 4s infinite ease-in-out;
-            transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
-        }
-
-        .skill-card:hover {
-            transform: translateY(-5px);
-            /* Intensify the red bloom on hover - NOW BLUE */
-            box-shadow: 0 0 25px rgba(34, 211, 238, 0.8), 0 0 40px rgba(59, 130, 246, 0.6);
-        }
-
-        /* NEW: Typewriter cursor */
-        .typing {
-            /* Add a blinking cursor at the end */
-            border-right: 2px solid rgba(34, 211, 238, 0.75); /* cyan-400 */
-            animation: blink-caret 0.75s step-end infinite;
-        }
-
-        @keyframes blink-caret {
-            from, to { border-color: transparent }
-            50% { border-color: rgba(34, 211, 238, 0.75); }
-        }
-
-
-        /* Modal styles (for Project Modal) */
+        /* Modal */
         .modal {
             display: none;
             position: fixed;
@@ -134,114 +92,63 @@
             top: 0;
             width: 100%;
             height: 100%;
-            overflow: auto;
-            background-color: rgba(0,0,0,0.7); /* Darker backdrop */
+            background-color: rgba(0,0,0,0.8);
             backdrop-filter: blur(5px);
+            align-items: center;
+            justify-content: center;
         }
         .modal-content {
-            background-color: #1e293b; /* slate-800 */
-            color: #e2e8f0; /* slate-200 */
-            margin: 10% auto; /* Adjusted for better centering */
-            padding: 24px;
-            border: 1px solid #334155; /* slate-700 */
-            border-radius: 8px;
-            width: 90%;
-            max-width: 500px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-            animation: modal-fade-in 0.3s ease-out;
+            animation: modal-pop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        @keyframes modal-pop {
+            from { transform: scale(0.95); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
         }
 
-        @keyframes modal-fade-in {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #334155; /* slate-700 */
-            padding-bottom: 12px;
-        }
-        .modal-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: #e2e8f0; /* slate-200 */
-        }
-
-        .modal-close {
-            color: #94a3b8; /* slate-400 */
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: color 0.2s;
-        }
-        .modal-close:hover,
-        .modal-close:focus {
-            color: #e2e8f0; /* slate-200 */
-        }
-        .modal-body {
-            padding-top: 16px;
-        }
-
-        /* Removed floating-image animation */
-
-        /* Scroll Reveal Animation Styles - Slower */
+        /* Scroll Reveal Classes */
         .scroll-reveal {
             opacity: 0;
             transform: translateY(30px);
-            transition: opacity 1s ease-out, transform 1s ease-out;
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
         }
         .scroll-reveal.visible {
             opacity: 1;
             transform: translateY(0);
         }
 
-        /* Professional card lift on hover - Reverted to cyan */
-        .interactive-card {
-            transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
+        /* Mobile Menu */
+        #mobile-menu {
+            transition: transform 0.3s ease-in-out;
+            transform: translateY(-100%);
+        }
+        #mobile-menu.open {
+            transform: translateY(0);
         }
 
-        .interactive-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3), 0 0 15px rgba(34, 211, 238, 0.2); /* shadow-lg and cyan glow */
+        /* Home Sticky Animation */
+        #home-text-content, #home-image-wrapper {
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
-
-
-        /* Styles for the new home animation */
-        #home-text-content {
-            /* Will be positioned by JS */
-            width: 90%;
-            max-width: 672px; /* ~max-w-2xl */
-            text-align: center; /* Start centered */
-            transition: top 0.2s ease-out, left 0.2s ease-out, transform 0.2s ease-out; /* Smooth transitions */
+        @media (min-width: 768px) {
+            #home-text-content { text-align: left; }
         }
         
-        #home-image-wrapper {
-            /* Will be positioned by JS */
-            transition: top 0.2s ease-out, left 0.2s ease-out, transform 0.2s ease-out; /* Smooth transitions */
-        }
-
-        @media (min-width: 768px) { /* md breakpoint */
-            #home-text-content {
-                text-align: left; /* Becomes left-aligned on desktop */
-            }
-        }
-
+        /* Markdown Styles in Output */
+        .markdown-prose h1, .markdown-prose h2, .markdown-prose h3 { color: #fff; font-weight: bold; margin-top: 1em; margin-bottom: 0.5em; }
+        .markdown-prose ul { list-style-type: disc; padding-left: 1.5em; color: #94a3b8; }
+        .markdown-prose strong { color: #22d3ee; }
+        .markdown-prose p { margin-bottom: 0.5em; color: #cbd5e1; }
+        .markdown-prose code { background: #1e293b; padding: 0.2em 0.4em; rounded: 4px; color: #f472b6; font-size: 0.9em; }
     </style>
     <script>
-        // Set up Tailwind configuration
         tailwind.config = {
             theme: {
                 extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
+                    fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
+                    colors: {
+                        slate: { 850: '#172033', 900: '#0f172a' }
                     },
                 },
             },
@@ -249,288 +156,573 @@
     </script>
 </head>
 
-<body class="bg-slate-900 text-slate-300 font-sans antialiased">
+<body class="bg-slate-900 text-slate-300 font-sans antialiased selection:bg-cyan-500/30 selection:text-cyan-200">
 
-    
-    <header class="bg-slate-900/70 backdrop-blur-md sticky top-0 z-50 w-full border-b border-slate-700/50">
-        <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Header -->
+    <header class="bg-slate-900/80 backdrop-blur-lg sticky top-0 z-50 w-full border-b border-slate-800">
+        <nav class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
-                
-                <div class="flex-shrink-0">
-                    <a href="#home" class="text-xl font-bold text-white transition-colors hover:text-cyan-400">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center gap-2 z-50">
+                    <i data-lucide="shield-check" class="text-cyan-400 w-6 h-6"></i>
+                    <a href="#home" class="text-lg font-bold text-white tracking-tight hover:text-cyan-400 transition-colors">
                         MD Nure Alam
                     </a>
                 </div>
                 
+                <!-- Desktop Menu -->
                 <div class="hidden md:block">
-                    <div class="ml-10 flex items-baseline space-x-4">
-                        <a href="#about" class="px-3 py-2 rounded-md text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-cyan-400 transition-colors">About</a>
-                        <a href="#skills" class="px-3 py-2 rounded-md text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-cyan-400 transition-colors">Skills</a>
-                        <!-- REMOVED: Project link -->
-                        <a href="#certifications" class="px-3 py-2 rounded-md text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-cyan-400 transition-colors">Certs</a>
-                        <a href="#projects" class="px-3 py-2 rounded-md text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-cyan-400 transition-colors">Projects</a>
-                        <a href="#contact" class="px-3 py-2 rounded-md text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-cyan-400 transition-colors">Contact</a>
+                    <div class="ml-10 flex items-baseline space-x-6">
+                        <a href="#about" class="text-sm font-medium text-slate-400 hover:text-cyan-400 transition-colors">About</a>
+                        <a href="#skills" class="text-sm font-medium text-slate-400 hover:text-cyan-400 transition-colors">Skills</a>
+                        <a href="#experience" class="text-sm font-medium text-slate-400 hover:text-cyan-400 transition-colors">Experience</a>
+                        <!-- NEW: Research Link Added -->
+                        <a href="#research" class="text-sm font-medium text-slate-400 hover:text-cyan-400 transition-colors">Research</a>
+                        <a href="#certifications" class="text-sm font-medium text-slate-400 hover:text-cyan-400 transition-colors">Certifications</a>
+                        <a href="#projects" class="text-sm font-medium text-slate-400 hover:text-cyan-400 transition-colors">Projects</a>
+                        <a href="#ai-tools" class="text-sm font-medium text-cyan-400 hover:text-white transition-colors flex items-center gap-1"><i data-lucide="sparkles" class="w-3 h-3"></i> AI Tools</a>
+                        
+                        <!-- Resume Link -->
+                        <a href="resume.pdf" download class="text-sm font-medium text-slate-400 hover:text-cyan-400 transition-colors flex items-center gap-1">
+                            <i data-lucide="file-text" class="w-3 h-3"></i> Resume
+                        </a>
+
+                        <a href="#contact" class="text-sm font-medium text-cyan-400 border border-cyan-400/30 px-4 py-2 rounded-full hover:bg-cyan-400/10 transition-all">Contact</a>
                     </div>
                 </div>
-                
-                <div class="-mr-2 flex md:hidden">
-                    <!-- Mobile menu button --></div>
+
+                <!-- Mobile Menu Button -->
+                <div class="flex md:hidden z-50">
+                    <button id="mobile-menu-btn" class="text-slate-400 hover:text-white p-2 focus:outline-none">
+                        <i data-lucide="menu" class="w-6 h-6"></i>
+                    </button>
+                </div>
             </div>
         </nav>
+
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobile-menu" class="fixed inset-0 bg-slate-900/95 backdrop-blur-xl z-40 md:hidden pt-24 px-6 flex flex-col gap-6">
+            <a href="#about" class="mobile-link text-xl font-medium text-slate-300 hover:text-cyan-400">About</a>
+            <a href="#skills" class="mobile-link text-xl font-medium text-slate-300 hover:text-cyan-400">Skills</a>
+            <a href="#experience" class="mobile-link text-xl font-medium text-slate-300 hover:text-cyan-400">Experience</a>
+            <!-- NEW: Mobile Research Link -->
+            <a href="#research" class="mobile-link text-xl font-medium text-slate-300 hover:text-cyan-400">Research</a>
+            <a href="#certifications" class="mobile-link text-xl font-medium text-slate-300 hover:text-cyan-400">Certifications</a>
+            <a href="#projects" class="mobile-link text-xl font-medium text-slate-300 hover:text-cyan-400">Projects</a>
+            <a href="#ai-tools" class="mobile-link text-xl font-medium text-cyan-400"><i data-lucide="sparkles" class="inline w-4 h-4"></i> AI Tools</a>
+            
+            <!-- Mobile Resume Link -->
+            <a href="resume.pdf" download class="mobile-link text-xl font-medium text-slate-300 hover:text-cyan-400 flex items-center gap-2">
+                <i data-lucide="file-text" class="w-5 h-5"></i> Download Resume
+            </a>
+
+            <a href="#contact" class="mobile-link text-xl font-medium text-cyan-400">Contact Me</a>
+        </div>
     </header>
 
-    
-    <!-- MODIFIED: Added inline style for fade-in animation -->
-    <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8" style="opacity: 0; animation: main-fade-in 1s ease-out 0.2s forwards;">
+    <main class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8" style="opacity: 0; animation: main-fade-in 0.8s ease-out 0.2s forwards;">
 
-        
+        <!-- Hero Section -->
         <section id="home-sticky-parent" class="relative" style="height: 200vh;">
-            
-            <!-- Sticky Container --><div id="home-sticky-container" class="sticky top-0 h-screen overflow-hidden">
-                <!-- Abstract background shape --><svg class="absolute -top-1/4 -left-1/4 w-[150%] h-[150%] text-slate-800 opacity-20 z-0" fill="none" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-                    <path d="M0,50 Q25,25 50,50 T100,50" stroke="currentColor" stroke-width="0.5"/>
-                    <path d="M0,50 Q25,75 50,50 T100,50" stroke="currentColor" stroke-width="0.5"/>
-                    <path d="M50,0 Q25,25 50,50 T50,100" stroke="currentColor" stroke-width="0.5"/>
-                    <path d="M50,0 Q75,25 50,50 T50,100" stroke="currentColor" stroke-width="0.5"/>
-                    <circle cx="50" cy="50" r="20" stroke="currentColor" stroke-width="0.5"/>
-                    <circle cx="50" cy="50" r="30" stroke="currentColor" stroke-width="0.5"/>
-                    <circle cx="50" cy="50" r="40" stroke="currentColor" stroke-width="0.5"/>
+            <div id="home-sticky-container" class="sticky top-0 h-screen overflow-hidden flex flex-col justify-center">
+                
+                <!-- Tech Grid Background -->
+                <svg class="absolute inset-0 w-full h-full opacity-10 z-0 pointer-events-none" width="100%" height="100%">
+                    <defs>
+                        <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+                            <path d="M 40 0 L 0 0 0 40" fill="none" stroke="white" stroke-width="0.5"/>
+                        </pattern>
+                    </defs>
+                    <rect width="100%" height="100%" fill="url(#grid)" />
+                    <radialGradient id="fade" cx="50%" cy="50%" r="50%">
+                        <stop offset="0%" stop-color="black" stop-opacity="0"/>
+                        <stop offset="100%" stop-color="black" stop-opacity="1"/>
+                    </radialGradient>
+                    <rect width="100%" height="100%" fill="url(#fade)"/>
                 </svg>
 
-                <!-- Content --><div id="home-text-content" class="absolute z-20 px-4"> <!-- Changed z-10 to z-20 --><span class="text-sm font-semibold text-cyan-400 uppercase tracking-wider">Ethical Hacker & Cybersecurity Professional</span>
-                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white mt-4 mb-6 leading-tight animated-name">
-                        Hi, I'm<br> MD Nure Alam
+                <div id="home-text-content" class="absolute z-20 px-4"> 
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-xs font-bold tracking-wide uppercase mb-6">
+                        <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+                        Available for hire
+                    </div>
+                    <h1 class="text-5xl md:text-6xl lg:text-7xl font-extrabold mb-6 leading-tight tracking-tight animated-name">
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600">
+                            Securing the<br> Digital Frontier
+                        </span>
                     </h1>
-                    <p class="text-lg md:text-xl text-slate-400 max-w-2xl mb-8">
-                        I secure digital assets by identifying and mitigating vulnerabilities before malicious actors can exploit them.
-                    </p>
-                    <div class="flex space-x-4 justify-center md:justify-start">
-                        <a href="#about" class="inline-block bg-cyan-4000 text-white font-semibold px-6 py-3 rounded-lg shadow-lg hover:bg-cyan-600 transition-transform hover:scale-105 animated-button-initial animated-button-hover">
-                            View My Work
+                    <!-- UPDATED: Added typewriter-text class and data-text attribute, removed inner HTML -->
+                    <p class="typewriter-text text-lg md:text-xl text-slate-400 max-w-xl mb-8 leading-relaxed" data-text="I am MD Nure Alam, an Ethical Hacker and Security Analyst specializing in offensive security, vulnerability management, and digital forensics."></p>
+                    
+                    <div class="flex flex-col sm:flex-row flex-wrap gap-4 justify-center md:justify-start">
+                        <a href="#projects" class="inline-flex justify-center items-center bg-cyan-500 text-slate-900 font-bold px-8 py-3.5 rounded-lg shadow-[0_0_20px_rgba(6,182,212,0.3)] hover:bg-cyan-400 hover:shadow-[0_0_30px_rgba(6,182,212,0.5)] transition-all">
+                            View Portfolio
+                            <i data-lucide="arrow-right" class="ml-2 w-4 h-4"></i>
                         </a>
                         
+                        <a href="resume.pdf" download class="inline-flex justify-center items-center px-8 py-3.5 rounded-lg border border-slate-600 text-white font-semibold hover:bg-slate-800 hover:border-cyan-500/50 hover:text-cyan-400 transition-all group">
+                            Download CV
+                            <i data-lucide="download" class="ml-2 w-4 h-4 group-hover:translate-y-0.5 transition-transform"></i>
+                        </a>
+
+                        <a href="#contact" class="inline-flex justify-center items-center px-8 py-3.5 rounded-lg border border-slate-600 text-white font-semibold hover:bg-slate-800 hover:border-slate-500 transition-all">
+                            Contact Me
                         </a>
                     </div>
                 </div>
 
-                <!-- Image --><div id="home-image-wrapper" class="absolute z-10"> <!-- Stays z-10 --><div class="w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 bg-slate-800 rounded-full border-4 border-cyan-500/30 shadow-2xl flex items-center justify-center overflow-hidden" style="animation: skill-card-bloom-pulse 4s infinite ease-in-out;">
-                        <img src="https://i.imgur.com/tP7qZbB.png" alt="MD Nure Alam" class="rounded-full w-full h-full object-cover">
+                <div id="home-image-wrapper" class="absolute z-10"> 
+                    <div class="relative w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96">
+                        <div class="absolute inset-0 rounded-full border border-cyan-500/20 border-dashed animate-[spin_10s_linear_infinite]"></div>
+                        <div class="absolute inset-4 rounded-full border border-slate-600/30 animate-[spin_15s_linear_infinite_reverse]"></div>
+                        <div class="absolute inset-2 rounded-full overflow-hidden border-2 border-slate-700 bg-slate-800 shadow-2xl">
+                            <img src="https://i.imgur.com/tP7qZbB.png" alt="MD Nure Alam" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/400x400/1e293b/94a3b8?text=Profile'">
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        
-        <section id="about" class="py-24 border-t border-slate-700/50 scroll-reveal">
-            <h2 class="text-3xl font-bold text-center text-white mb-4 animated-header-bloom">About Me</h2>
-            <p class="text-cyan-400 text-center text-sm font-semibold mb-12">My Professional Story</p>
+        <!-- About Section -->
+        <section id="about" class="py-32 border-t border-slate-800 scroll-reveal">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-3">About Me</h2>
+                <div class="h-1 w-20 bg-cyan-500 mx-auto rounded-full"></div>
+            </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-5 gap-12 items-center">
-                <div class="md:col-span-2 flex justify-center">
-                    <img src="https://i.imgur.com/5Qru5PG.png" alt="MD Nure Alam professional headshot" class="rounded-lg shadow-xl object-cover w-full h-auto max-h-96 object-top animated-image-bloom">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+                <div class="lg:col-span-5 relative">
+                    <div class="relative rounded-2xl overflow-hidden shadow-2xl border border-slate-700/50">
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent opacity-60"></div>
+                        <!-- Updated About Me Photo -->
+                        <img src="https://i.imgur.com/J9byCOv.png" alt="Professional Headshot" class="w-full h-auto object-cover" onerror="this.src='https://placehold.co/600x800/1e293b/94a3b8?text=Photo'">
+                    </div>
+                    <div class="absolute -bottom-6 -right-6 bg-slate-800 p-4 rounded-xl border border-slate-700 shadow-xl hidden md:block">
+                        <div class="flex items-center gap-3">
+                            <div class="bg-cyan-500/20 p-2 rounded-lg text-cyan-400">
+                                <i data-lucide="shield" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs text-slate-400 uppercase font-bold">Experience</p>
+                                <p class="text-lg font-bold text-white">4+ Years</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="md:col-span-3 text-slate-400 text-lg space-y-4">
-                    <p class="typewriter-text">
-                        Hello! I'm a passionate and detail-oriented Ethical Hacker dedicated to strengthening digital defenses. With a deep interest in offensive security, I specialize in proactively identifying security flaws in web applications, networks, and systems.
+                
+                <div class="lg:col-span-7 text-slate-400 text-lg space-y-6">
+                    <h3 class="text-2xl font-bold text-white mb-4">Passionate about Offensive Security</h3>
+                    
+                    <div class="typewriter-container space-y-4">
+                        <p class="typewriter-text leading-relaxed" data-text="I am a dedicated Security Professional driven by the challenge of uncovering hidden vulnerabilities. My approach combines technical expertise with a strategic mindset, allowing me to anticipate attacker behaviors and fortify defenses effectively."></p>
+                        <p class="typewriter-text leading-relaxed" data-text="From conducting intricate penetration tests to analyzing complex network traffic, I deliver actionable insights that help organizations minimize risk and maintain business continuity."></p>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-4 pt-4">
+                        <div class="flex items-center gap-2">
+                            <i data-lucide="check-circle-2" class="text-cyan-500 w-5 h-5"></i>
+                            <span class="text-slate-300 text-sm">Vulnerability Assessment</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <i data-lucide="check-circle-2" class="text-cyan-500 w-5 h-5"></i>
+                            <span class="text-slate-300 text-sm">Network Security</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <i data-lucide="check-circle-2" class="text-cyan-500 w-5 h-5"></i>
+                            <span class="text-slate-300 text-sm">Secure Code Review</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <i data-lucide="check-circle-2" class="text-cyan-500 w-5 h-5"></i>
+                            <span class="text-slate-300 text-sm">Incident Response</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills Section -->
+        <section id="skills" class="py-32 border-t border-slate-800 scroll-reveal">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-3">Technical Arsenal</h2>
+                <p class="text-slate-400">Tools and methodologies I utilize to secure systems.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
+                <div class="glass-card p-8 rounded-xl">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="bg-cyan-500/10 p-3 rounded-lg text-cyan-400 border border-cyan-500/20">
+                            <i data-lucide="crosshair" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white">Penetration Testing</h3>
+                    </div>
+                    <ul class="space-y-3">
+                        <li class="flex items-center gap-3 text-slate-400">
+                            <span class="w-1.5 h-1.5 bg-cyan-500 rounded-full"></span>
+                            Web Apps (OWASP Top 10)
+                        </li>
+                        <li class="flex items-center gap-3 text-slate-400">
+                            <span class="w-1.5 h-1.5 bg-cyan-500 rounded-full"></span>
+                            Network Infrastructure (Int/Ext)
+                        </li>
+                        <li class="flex items-center gap-3 text-slate-400">
+                            <span class="w-1.5 h-1.5 bg-cyan-500 rounded-full"></span>
+                            API Security Testing
+                        </li>
+                    </ul>
+                </div>
+                <div class="glass-card p-8 rounded-xl">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="bg-cyan-500/10 p-3 rounded-lg text-cyan-400 border border-cyan-500/20">
+                            <i data-lucide="terminal" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white">Security Operations</h3>
+                    </div>
+                    <ul class="space-y-3">
+                        <li class="flex items-center gap-3 text-slate-400">
+                            <span class="w-1.5 h-1.5 bg-cyan-500 rounded-full"></span>
+                            Tooling: Nessus, Burp Suite, Metasploit
+                        </li>
+                        <li class="flex items-center gap-3 text-slate-400">
+                            <span class="w-1.5 h-1.5 bg-cyan-500 rounded-full"></span>
+                            SIEM Monitoring & Analysis
+                        </li>
+                        <li class="flex items-center gap-3 text-slate-400">
+                            <span class="w-1.5 h-1.5 bg-cyan-500 rounded-full"></span>
+                            Traffic Analysis (Wireshark)
+                        </li>
+                    </ul>
+                </div>
+                <div class="glass-card p-8 rounded-xl">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="bg-cyan-500/10 p-3 rounded-lg text-cyan-400 border border-cyan-500/20">
+                            <i data-lucide="code-2" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white">DevSecOps & Scripting</h3>
+                    </div>
+                    <ul class="space-y-3">
+                        <li class="flex items-center gap-3 text-slate-400">
+                            <span class="w-1.5 h-1.5 bg-cyan-500 rounded-full"></span>
+                            Python for Security Automation
+                        </li>
+                        <li class="flex items-center gap-3 text-slate-400">
+                            <span class="w-1.5 h-1.5 bg-cyan-500 rounded-full"></span>
+                            Bash & PowerShell Scripting
+                        </li>
+                        <li class="flex items-center gap-3 text-slate-400">
+                            <span class="w-1.5 h-1.5 bg-cyan-500 rounded-full"></span>
+                            Secure SDLC Integration
+                        </li>
+                    </ul>
+                </div>
+                <div class="glass-card p-8 rounded-xl">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="bg-cyan-500/10 p-3 rounded-lg text-cyan-400 border border-cyan-500/20">
+                            <i data-lucide="file-shield" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white">GRC & Frameworks</h3>
+                    </div>
+                    <ul class="space-y-3">
+                        <li class="flex items-center gap-3 text-slate-400">
+                            <span class="w-1.5 h-1.5 bg-cyan-500 rounded-full"></span>
+                            NIST Cybersecurity Framework
+                        </li>
+                        <li class="flex items-center gap-3 text-slate-400">
+                            <span class="w-1.5 h-1.5 bg-cyan-500 rounded-full"></span>
+                            MITRE ATT&CK Mapping
+                        </li>
+                        <li class="flex items-center gap-3 text-slate-400">
+                            <span class="w-1.5 h-1.5 bg-cyan-500 rounded-full"></span>
+                            ISO 27001 Standards
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Experience Section -->
+        <section id="experience" class="py-32 border-t border-slate-800 scroll-reveal">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-3">Professional Experience</h2>
+                <p class="text-slate-400">My career trajectory in information security.</p>
+            </div>
+
+            <div class="max-w-5xl mx-auto relative">
+                <div class="absolute left-0 md:left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-cyan-500 via-slate-700 to-slate-900 transform md:-translate-x-1/2 ml-6 md:ml-0"></div>
+
+                <div class="relative z-10 mb-12 group">
+                    <div class="md:w-1/2 md:ml-auto md:pl-12 pl-16 pr-4">
+                        <div class="glass-card p-6 rounded-xl relative">
+                            <div class="absolute top-6 -left-[53px] md:-left-[65px] w-5 h-5 rounded-full border-4 border-slate-900 bg-cyan-400 shadow-[0_0_10px_rgba(34,211,238,0.5)] z-20"></div>
+                            <span class="text-cyan-400 text-sm font-bold tracking-wide uppercase mb-1 block">2023 - Present</span>
+                            <h3 class="text-xl font-bold text-white mb-1">Senior Ethical Hacker</h3>
+                            <p class="text-slate-400 text-sm mb-4 font-medium">CyberGuard Solutions</p>
+                            <p class="text-slate-400 text-sm leading-relaxed">
+                                Leading red team operations and penetration testing engagements. Successfully identified critical vulnerabilities in financial systems.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="relative z-10 mb-12 group">
+                    <div class="md:w-1/2 md:mr-auto md:pr-12 md:text-right pl-16 pr-4 md:pl-0">
+                        <div class="glass-card p-6 rounded-xl relative">
+                            <div class="absolute top-6 -left-[53px] md:left-auto md:-right-[65px] w-5 h-5 rounded-full border-4 border-slate-900 bg-slate-700 z-20 group-hover:bg-cyan-400 transition-colors"></div>
+                            <span class="text-cyan-400 text-sm font-bold tracking-wide uppercase mb-1 block">2021 - 2023</span>
+                            <h3 class="text-xl font-bold text-white mb-1">Junior Security Analyst</h3>
+                            <p class="text-slate-400 text-sm mb-4 font-medium">TechDefend Inc.</p>
+                            <p class="text-slate-400 text-sm leading-relaxed">
+                                Conducted vulnerability scanning and log analysis. Assisted in the remediation of over 500 security findings across enterprise networks.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="relative z-10 group">
+                    <div class="md:w-1/2 md:ml-auto md:pl-12 pl-16 pr-4">
+                        <div class="glass-card p-6 rounded-xl relative">
+                            <div class="absolute top-6 -left-[53px] md:-left-[65px] w-5 h-5 rounded-full border-4 border-slate-900 bg-slate-700 z-20 group-hover:bg-cyan-400 transition-colors"></div>
+                            <span class="text-cyan-400 text-sm font-bold tracking-wide uppercase mb-1 block">2020 - 2021</span>
+                            <h3 class="text-xl font-bold text-white mb-1">Freelance Bug Hunter</h3>
+                            <p class="text-slate-400 text-sm mb-4 font-medium">HackerOne / Bugcrowd</p>
+                            <p class="text-slate-400 text-sm leading-relaxed">
+                                Ranked in the top 15% of researchers. Identified significant IDOR and XSS vulnerabilities in public bug bounty programs.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- NEW: Research & Publications Section -->
+        <section id="research" class="py-32 border-t border-slate-800 scroll-reveal">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-3">Research & Publications</h2>
+                <p class="text-slate-400 mb-8">Contributing to the academic and practical security landscape.</p>
+                
+                <!-- Google Scholar Profile Button -->
+                <a href="https://scholar.google.com/citations?view_op=new_profile&hl=en&authuser=1" target="_blank" class="inline-flex items-center gap-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white px-6 py-3 rounded-full transition-all group hover:border-cyan-500/50">
+                    <i data-lucide="graduation-cap" class="text-cyan-400 group-hover:scale-110 transition-transform"></i>
+                    <span class="font-semibold">View Google Scholar Profile</span>
+                </a>
+            </div>
+
+            <div class="max-w-3xl mx-auto">
+                <!-- Publication 1: TCP Port Networking -->
+                <div class="glass-card p-8 rounded-xl group hover:border-cyan-500/50 transition-colors">
+                    <div class="flex justify-between items-start mb-6">
+                        <div class="p-3 bg-cyan-500/10 rounded-lg text-cyan-400 border border-cyan-500/20">
+                            <i data-lucide="book-open" class="w-8 h-8"></i>
+                        </div>
+                        <span class="text-xs font-mono text-slate-500 border border-slate-700 px-3 py-1 rounded-full bg-slate-900">Research Paper</span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-3 group-hover:text-cyan-400 transition-colors">TCP Port Networking</h3>
+                    <p class="text-slate-400 text-sm mb-6">Author: <span class="text-slate-300 font-medium">MD Nure Alam</span></p>
+                    <p class="text-slate-400 leading-relaxed mb-8">
+                        A study focused on the intricacies of Transmission Control Protocol (TCP) ports, analyzing their role in network communication, potential security vulnerabilities associated with open ports, and methodologies for securing network perimeters against port-based attacks.
                     </p>
-                    <p class="typewriter-text">
-                        My methodology is built on a <strong class="text-slate-200">"think like an attacker"</strong> mindset to provide a <strong class="text-slate-200">"defend like an expert"</strong> solution. I am committed to a culture of continuous learning to stay ahead of emerging threats and am driven by the challenge of solving complex security puzzles.
-                    </p>
-                    <p class="typewriter-text">
-                        My goal is to help organizations protect their valuable data and maintain a robust security posture.
-                    </p>
+                    <div class="flex gap-4">
+                        <a href="https://scholar.google.com/citations?view_op=new_profile&hl=en&authuser=1" target="_blank" class="inline-flex items-center text-sm bg-cyan-600 hover:bg-cyan-500 text-white font-bold py-2 px-6 rounded transition-colors">
+                            View on Scholar <i data-lucide="arrow-up-right" class="w-4 h-4 ml-2"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
         </section>
 
-        
-        <section id="skills" class="py-24 border-t border-slate-700/50 scroll-reveal">
-            
-            <!-- EDIT: Wrapped the header in a skill-card div --><div class="skill-card mb-12">
-                <h2 class="text-3xl font-bold text-center text-white mb-4">My Technical Toolkit</h2>
-                <p class="text-cyan-400 text-center text-sm font-semibold">Technologies, Tools, and Methodologies</p>
+        <!-- Certifications Section -->
+        <section id="certifications" class="py-32 border-t border-slate-800 scroll-reveal">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-3">Certifications</h2>
+                <p class="text-slate-400">Validated skills and industry-recognized credentials.</p>
             </div>
 
-
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
-                
-                <div class="skill-card">
-                    <h3 class="text-xl font-semibold text-white mb-4">Penetration Testing</h3>
-                    <ul class="list-disc list-inside text-slate-400 space-y-2">
-                        <li>Web Application Pentesting (OWASP Top 10)</li>
-                        <li>Network Penetration Testing (Internal & External)</li>
-                        <li>Vulnerability Assessment & Management</li>
-                        <li>Wireless Network Assessment</li>
-                        <li>Social Engineering</li>
-                    </ul>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-6xl mx-auto">
+                <div class="glass-card p-6 rounded-xl flex items-start gap-5 cursor-pointer group" onclick="showImageModal('https://i.imgur.com/VunLnTf.png')">
+                    <div class="flex-shrink-0 bg-slate-800 p-3 rounded-lg border border-slate-700 group-hover:border-cyan-500/50 transition-colors">
+                        <img src="https://i.imgur.com/ktniPqS.png" alt="Cisco" class="w-10 h-10 object-contain">
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-white group-hover:text-cyan-400 transition-colors">Certified Ethical Hacker</h3>
+                        <p class="text-slate-400 text-sm mb-2">Cisco Networking Academy</p>
+                        <span class="text-xs text-cyan-500 font-medium flex items-center gap-1">
+                            View Certificate <i data-lucide="external-link" class="w-3 h-3"></i>
+                        </span>
+                    </div>
                 </div>
-                
-                <div class="skill-card">
-                    <h3 class="text-xl font-semibold text-white mb-4">Security Tools</h3>
-                    <ul class="list-disc list-inside text-slate-400 space-y-2">
-                        <li><strong class="text-slate-300">Scanning:</strong> Nmap, Nessus, OpenVAS</li>
-                        <li><strong class="text-slate-300">Exploitation:</strong> Metasploit, Burp Suite Pro, SQLMap</li>
-                        <li><strong class="text-slate-300">Analysis:</strong> Wireshark, tcpdump</li>
-                        <li><strong class="text-slate-300">Recon:</strong> OSINT Frameworks, Shodan</li>
-                    </ul>
+                <div class="glass-card p-6 rounded-xl flex items-start gap-5 cursor-pointer group">
+                    <div class="flex-shrink-0 bg-slate-800 p-3 rounded-lg border border-slate-700 group-hover:border-cyan-500/50 transition-colors">
+                        <i data-lucide="award" class="text-white w-10 h-10"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-white group-hover:text-cyan-400 transition-colors">eJPT - Junior Penetration Tester</h3>
+                        <p class="text-slate-400 text-sm mb-2">INE (eLearnSecurity)</p>
+                        <span class="text-xs text-cyan-500 font-medium flex items-center gap-1">
+                            View Credential <i data-lucide="external-link" class="w-3 h-3"></i>
+                        </span>
+                    </div>
                 </div>
-                
-                <div class="skill-card">
-                    <h3 class="text-xl font-semibold text-white mb-4">Key Knowledge Areas</h3>
-                    <ul class="list-disc list-inside text-slate-400 space-y-2">
-                        <li><strong class="text-slate-300">Scripting:</strong> Python, Bash, PowerShell</li>
-                        <li>Active Directory Security</li>
-                        <li>Incident Response & Forensics</li>
-                        <li>Secure SDLC (Software Development Lifecycle)</li>
-                        <li>Cryptography Principles</li>
-                    </ul>
+                <div class="glass-card p-6 rounded-xl flex items-start gap-5 cursor-pointer group" onclick="showImageModal('https://i.imgur.com/if9arbg.png')">
+                    <div class="flex-shrink-0 bg-slate-800 p-3 rounded-lg border border-slate-700 group-hover:border-cyan-500/50 transition-colors">
+                        <img src="https://i.imgur.com/ktniPqS.png" alt="Cisco" class="w-10 h-10 object-contain">
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-white group-hover:text-cyan-400 transition-colors">Intro to Cybersecurity</h3>
+                        <p class="text-slate-400 text-sm mb-2">Cisco Networking Academy</p>
+                        <span class="text-xs text-cyan-500 font-medium flex items-center gap-1">
+                            View Certificate <i data-lucide="external-link" class="w-3 h-3"></i>
+                        </span>
+                    </div>
                 </div>
-                
-                <div class="skill-card">
-                    <h3 class="text-xl font-semibold text-white mb-4">Compliance & Frameworks</h3>
-                    <ul class="list-disc list-inside text-slate-400 space-y-2">
-                        <li>NIST Cybersecurity Framework</li>
-                        <li>ISO 27001/27002</li>
-                        <li>PCI-DSS (Payment Card Industry)</li>
-                        <li>MITRE ATT&CK Framework</li>
-                        <li>Risk Management Frameworks (RMF)</li>
-                    </ul>
+                 <div class="glass-card p-6 rounded-xl flex items-start gap-5 cursor-pointer group" onclick="showImageModal('https://i.imgur.com/5YjsW8U.png')">
+                    <div class="flex-shrink-0 bg-slate-800 p-3 rounded-lg border border-slate-700 group-hover:border-cyan-500/50 transition-colors">
+                         <img src="https://i.imgur.com/ZJZXCIV.png" alt="ICTTF" class="w-10 h-10 object-contain">
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-white group-hover:text-cyan-400 transition-colors">CSCSO - SME Security Officer</h3>
+                        <p class="text-slate-400 text-sm mb-2">ICTTF Community</p>
+                        <span class="text-xs text-cyan-500 font-medium flex items-center gap-1">
+                            View Certificate <i data-lucide="external-link" class="w-3 h-3"></i>
+                        </span>
+                    </div>
                 </div>
             </div>
         </section>
 
-        
-        <!-- REMOVED: Entire Projects Section -->
-
-        
-        <section id="certifications" class="py-24 border-t border-slate-700/50 scroll-reveal">
-            <h2 class="text-3xl font-bold text-center text-white mb-4">Certifications & Education</h2>
-            <p class="text-cyan-400 text-center text-sm font-semibold mb-12">My Credentials</p>
-
-            <div class="max-w-3xl mx-auto space-y-6">
-                
-                <div class="bg-slate-800 p-6 rounded-lg shadow-lg flex items-center space-x-6 border border-slate-700/50 interactive-card">
-                    <div class="flex-shrink-0 w-16 h-16 bg-cyan-500 rounded-full flex items-center justify-center">
-                        
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
-Input:
-                    </div>
-                    <div>
-                        <h3 class="text-xl font-semibold text-white">eJPT - eLearnSecurity Junior Penetration Tester</h3>
-                        <p class="text-slate-400">Issued by: INE (eLearnSecurity)</p>
-                        <p class="text-sm text-slate-500">Credential ID: [Your ID or Link]</p>
-                    </div>
+        <!-- Projects Section -->
+        <section id="projects" class="py-32 border-t border-slate-800 scroll-reveal">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-12">
+                <div>
+                    <h2 class="text-3xl md:text-4xl font-bold text-white mb-3">Featured Projects</h2>
+                    <p class="text-slate-400">Case studies and technical implementations.</p>
                 </div>
-                
-                <!-- NEW: Cisco Ethical Hacker Cert --><div class="bg-slate-800 p-6 rounded-lg shadow-lg flex items-center space-x-6 border border-slate-700/50 interactive-card"
-                     onclick="showImageModal('https://i.imgur.com/VunLnTf.png')"
-                     style="cursor: pointer;">
-                    <div class="flex-shrink-0 w-16 h-16 bg-slate-700 rounded-full flex items-center justify-center overflow-hidden">
-                        <!-- EDIT: Replaced logo with user's new link --><img src="https://i.imgur.com/ktniPqS.png" alt="Cisco Logo" class="w-full h-full object-contain p-3">
-                    </div>
-                    <div>
-                        <h3 class="text-xl font-semibold text-white">Cisco Certified Ethical Hacker</h3>
-                        <p class="text-slate-400">Issued by: Cisco Networking Academy</p>
-                        <!-- EDIT: Update the onclick URL with your cert image --><p class="text-sm text-cyan-400">Click to view certificate</p>
-                    </div>
-                </div>
-
-                <!-- NEW: Cisco Cybersecurity Cert --><div class="bg-slate-800 p-6 rounded-lg shadow-lg flex items-center space-x-6 border border-slate-700/50 interactive-card"
-                     onclick="showImageModal('https://i.imgur.com/if9arbg.png')"
-                     style="cursor: pointer;">
-                    <div class="flex-shrink-0 w-16 h-16 bg-slate-700 rounded-full flex items-center justify-center overflow-hidden">
-                        <!-- EDIT: Badge Icon replaced with user's logo link --><img src="https://i.imgur.com/ktniPqS.png" alt="Cisco Logo" class="w-full h-full object-contain p-3">
-                    </div>
-                    <div>
-                        <h3 class="text-xl font-semibold text-white">Introduction to Cybersecurity</h3>
-                        <p class="text-slate-400">Issued by: Cisco Networking Academy</p>
-                        <!-- EDIT: Update the onclick URL with your cert image --><p class="text-sm text-cyan-400">Click to view certificate</p>
-                    </div>
-                </div>
-                
-            
-                
-                <!-- NEW: 4th Certification with user logo -->
-                <div class="bg-slate-800 p-6 rounded-lg shadow-lg flex items-center space-x-6 border border-slate-700/50 interactive-card"
-                     onclick="showImageModal('https://i.imgur.com/5YjsW8U.png')"
-                     style="cursor: pointer;">
-                    <div class="flex-shrink-0 w-16 h-16 bg-slate-700 rounded-full flex items-center justify-center overflow-hidden">
-                        <img src="https://i.imgur.com/ZJZXCIV.png" alt="Certification Logo" class="w-full h-full object-contain p-3">
-                    </div>
-                    <div>
-                        <h3 class="text-xl font-semibold text-white">CSCSO Certified SME Cyber Security Officer</h3>
-                        <p class="text-slate-400">Issued by: ICTTF - Cyber Security Community</p>
-                        <p class="text-sm text-cyan-400">Click to view certificate</p>
-                    </div>
-                </div>
-                
-                <!-- REMOVED the 4th certification block for B.Sc. -->
+                <a href="#" class="text-cyan-400 hover:text-white text-sm font-semibold flex items-center gap-2 mt-4 md:mt-0 transition-colors">
+                    View GitHub <i data-lucide="github" class="w-4 h-4"></i>
+                </a>
             </div>
-
-            
-        </section>
-
-        
-        <!-- NEW: Projects Section -->
-        <section id="projects" class="py-24 border-t border-slate-700/50 scroll-reveal">
-            <h2 class="text-3xl font-bold text-center text-white mb-4 animated-header-bloom">My Projects</h2>
-            <p class="text-cyan-400 text-center text-sm font-semibold mb-12">A gallery of my work and case studies.</p>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 
-                <!-- Project 1 -->
-                <a href="https://nurealam-cyber-specialist.github.io/Project-wise/#home" target="_blank" rel="noopener noreferrer" class="block bg-slate-800 rounded-lg shadow-lg overflow-hidden border border-slate-700/50 interactive-card animated-image-bloom">
-                    <img src="https://i.imgur.com/TptW9ww.png" alt="Project 1" class="w-full h-56 object-cover" onerror="this.src='https://placehold.co/600x400/1e293b/94a3b8?text=Project+1'">
-                    <div class="p-4">
-                        <h3 class="text-lg font-semibold text-white">WIZE App</h3>
+                <a href="https://nurealam-cyber-specialist.github.io/Project-wise/#home" target="_blank" class="glass-card rounded-xl overflow-hidden group block">
+                    <div class="relative h-48 overflow-hidden">
+                        <div class="absolute inset-0 bg-slate-900/50 group-hover:bg-transparent transition-colors z-10"></div>
+                        <img src="https://i.imgur.com/TptW9ww.png" alt="WIZE App" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500" onerror="this.src='https://placehold.co/600x400/1e293b/94a3b8?text=Project'">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-white mb-2 group-hover:text-cyan-400 transition-colors">WIZE App Audit</h3>
+                        <p class="text-slate-400 text-sm mb-4 line-clamp-2">Comprehensive security analysis of a fintech web application focusing on IDOR and Logic flaws.</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-2 py-1 bg-slate-800 text-xs text-slate-300 rounded border border-slate-700">Web Sec</span>
+                            <span class="px-2 py-1 bg-slate-800 text-xs text-slate-300 rounded border border-slate-700">Burp Suite</span>
+                        </div>
                     </div>
                 </a>
 
-                <!-- Project 2 -->
-                <div class="bg-slate-800 rounded-lg shadow-lg overflow-hidden border border-slate-700/50 interactive-card animated-image-bloom">
-                    <img src="https://placehold.co/600x400/1e293b/94a3b8?text=Project+2" alt="Project 2" class="w-full h-56 object-cover" onerror="this.src='https://placehold.co/600x400/1e293b/94a3b8?text=Project+2'">
-                    <div class="p-4">
-                        <h3 class="text-lg font-semibold text-white">Hack The Box Write-up</h3>
+                <div class="glass-card rounded-xl overflow-hidden group">
+                    <div class="relative h-48 overflow-hidden">
+                        <div class="absolute inset-0 bg-slate-900/50 group-hover:bg-transparent transition-colors z-10"></div>
+                        <!-- Updated Hack The Box Image -->
+                        <img src="https://i.imgur.com/HvUIM17.png" alt="Hack The Box" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500" onerror="this.src='https://placehold.co/600x400/1e293b/94a3b8?text=HTB'">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-white mb-2">Hack The Box: Dante</h3>
+                        <p class="text-slate-400 text-sm mb-4">A pro-lab writeup detailing the compromise of an enterprise network using pivoting.</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-2 py-1 bg-slate-800 text-xs text-slate-300 rounded border border-slate-700">Active Directory</span>
+                            <span class="px-2 py-1 bg-slate-800 text-xs text-slate-300 rounded border border-slate-700">Pivoting</span>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Project 3 -->
-                <div class="bg-slate-800 rounded-lg shadow-lg overflow-hidden border border-slate-700/50 interactive-card animated-image-bloom">
-                    <img src="https://placehold.co/600x400/1e293b/94a3b8?text=Project+3" alt="Project 3" class="w-full h-56 object-cover" onerror="this.src='https://placehold.co/600x400/1e293b/94a3b8?text=Project+3'">
-                    <div class="p-4">
-                        <h3 class="text-lg font-semibold text-white">Python Recon Tool</h3>
+                <div class="glass-card rounded-xl overflow-hidden group">
+                    <div class="relative h-48 overflow-hidden">
+                        <div class="absolute inset-0 bg-slate-900/50 group-hover:bg-transparent transition-colors z-10"></div>
+                        <!-- Updated AutoRecon Image -->
+                        <img src="https://i.imgur.com/FvPk49a.png" alt="AutoRecon Tool" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500" onerror="this.src='https://placehold.co/600x400/1e293b/94a3b8?text=AutoRecon'">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-white mb-2">AutoRecon Tool</h3>
+                        <p class="text-slate-400 text-sm mb-4">Python automation script that chains Nmap, Nikto, and Gobuster for rapid initial enumeration.</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-2 py-1 bg-slate-800 text-xs text-slate-300 rounded border border-slate-700">Python</span>
+                            <span class="px-2 py-1 bg-slate-800 text-xs text-slate-300 rounded border border-slate-700">Automation</span>
+                        </div>
                     </div>
                 </div>
 
             </div>
         </section>
-        <!-- END: Projects Section -->
 
-        
-        <section id="contact" class="py-24 border-t border-slate-700/50 scroll-reveal">
-            <h2 class="text-3xl font-bold text-center text-white mb-4">Let's Connect</h2>
-            <p class="text-cyan-400 text-center text-sm font-semibold mb-12">I'm open to opportunities and collaboration.</p>
+        <!-- AI TOOLS SECTION -->
+        <section id="ai-tools" class="py-32 border-t border-slate-800 scroll-reveal">
+            <div class="text-center mb-16">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-xs font-bold tracking-wide uppercase mb-4">
+                    <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+                    Powered by Gemini AI
+                </div>
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-3">AI Threat Intel Scanner ✨</h2>
+                <p class="text-slate-400 max-w-2xl mx-auto">Paste a suspicious email, log entry, or code snippet below to get an instant security analysis generated by artificial intelligence.</p>
+            </div>
 
-            <div class="max-w-lg mx-auto text-center">
-                <p class="text-lg text-slate-400 mb-8">
-                    Feel free to get in touch. I'm always open to discussing new opportunities, projects, or just chatting about cybersecurity.
+            <div class="max-w-4xl mx-auto">
+                <!-- API Key Input (For testing) -->
+                <div class="mb-6 flex justify-end">
+                     <input type="password" id="apiKeyInput" placeholder="Enter Gemini API Key to Test" class="bg-slate-900 border border-slate-700 text-slate-300 text-xs rounded-lg px-3 py-2 focus:outline-none focus:border-cyan-500 w-64 transition-colors">
+                </div>
+
+                <div class="glass-card p-1 rounded-xl overflow-hidden border border-slate-700">
+                    <!-- Terminal Header -->
+                    <div class="bg-slate-900 px-4 py-2 flex items-center gap-2 border-b border-slate-800">
+                        <div class="flex gap-1.5">
+                            <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                            <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                            <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                        </div>
+                        <div class="text-xs text-slate-500 font-mono ml-2">threat_scanner.exe</div>
+                    </div>
+                    
+                    <!-- Input Area -->
+                    <div class="p-6 bg-slate-950">
+                        <textarea id="aiInput" rows="6" class="w-full bg-transparent terminal-input text-sm p-4 rounded-lg resize-y" placeholder="// Paste log, email text, or code snippet here for analysis..."></textarea>
+                        
+                        <div class="mt-4 flex justify-between items-center">
+                            <div class="text-xs text-slate-500 font-mono" id="statusText">Ready to scan...</div>
+                            <button onclick="analyzeThreat()" id="analyzeBtn" class="bg-cyan-600 hover:bg-cyan-500 text-white text-sm font-bold py-2 px-6 rounded transition-colors flex items-center gap-2">
+                                <i data-lucide="scan-line" class="w-4 h-4"></i> Run Analysis ✨
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Output Area -->
+                    <div id="aiOutputContainer" class="hidden border-t border-slate-800 bg-slate-900/50 p-6">
+                        <div class="flex items-center gap-2 mb-4 text-cyan-400 font-bold text-sm uppercase tracking-wider">
+                            <i data-lucide="file-search" class="w-4 h-4"></i> Analysis Report
+                        </div>
+                        <div id="aiOutput" class="markdown-prose text-sm leading-relaxed font-mono text-slate-300">
+                            <!-- AI Content goes here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="py-32 border-t border-slate-800 scroll-reveal">
+            <div class="max-w-3xl mx-auto text-center">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">Ready to Secure Your Assets?</h2>
+                <p class="text-slate-400 text-lg mb-10">
+                    I am currently available for freelance projects and full-time opportunities. 
+                    Whether you have a question or just want to say hi, I'll try my best to get back to you!
                 </p>
                 
-                <div class="flex justify-center space-x-6">
-                    
-                    <a href="https://linkedin.com/in/your-profile" target="_blank" rel="noopener noreferrer" class="text-slate-400 hover:text-cyan-400 transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
-                        <span class="sr-only">LinkedIn</span>
+                <div class="flex justify-center gap-6 mb-12">
+                    <a href="mailto:your.email@example.com" class="flex items-center gap-3 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white px-6 py-4 rounded-xl transition-all group">
+                        <i data-lucide="mail" class="text-cyan-400 group-hover:scale-110 transition-transform"></i>
+                        <span class="font-semibold">Send an Email</span>
                     </a>
-                    
-                    <a href="https://github.com/your-username" target="_blank" rel="noopener noreferrer" class="text-slate-400 hover:text-cyan-400 transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87c0-.66-.25-1.28-.7-1.73l-4.1-3.6c-.6-.5-1.5-.5-2.1 0l-4.1 3.6c-.45.45-.7 1.07-.7 1.73V20c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-2.17c0-.5-.2-1-.5-1.3l-2-1.7c-.3-.3-.7-.3-1 0l-2 1.7c-.3.3-.5.8-.5 1.3V19"></path></pre></svg>
-                        <span class="sr-only">GitHub</span>
-                    </a>
-                    
-                    <a href="mailto:your.email@example.com" class="text-slate-400 hover:text-cyan-400 transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>
-                        <span class="sr-only">Email</span>
+                    <!-- Updated LinkedIn Link -->
+                    <a href="https://www.linkedin.com/feed/" target="_blank" class="flex items-center gap-3 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white px-6 py-4 rounded-xl transition-all group">
+                        <i data-lucide="linkedin" class="text-cyan-400 group-hover:scale-110 transition-transform"></i>
+                        <span class="font-semibold">LinkedIn</span>
                     </a>
                 </div>
             </div>
@@ -538,236 +730,250 @@ Input:
 
     </main>
 
-    
-    <footer class="bg-slate-900 border-t border-slate-700/50">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-            <p class="text-center text-sm text-slate-500">
-                &copy; <span id="current-year"></span> MD Nure Alam. All Rights Reserved.
-            </p>
+    <!-- Footer -->
+    <footer class="bg-slate-900 border-t border-slate-800 pt-16 pb-8">
+        <div class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center mb-8">
+                <div class="mb-4 md:mb-0">
+                    <span class="text-2xl font-bold text-white tracking-tight">MD Nure Alam</span>
+                    <p class="text-slate-500 text-sm mt-1">Ethical Hacker & Security Analyst</p>
+                </div>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-slate-400 hover:text-cyan-400 transition-colors"><span class="sr-only">GitHub</span><i data-lucide="github" class="w-6 h-6"></i></a>
+                    <!-- Updated Footer LinkedIn Link -->
+                    <a href="https://www.linkedin.com/feed/" target="_blank" class="text-slate-400 hover:text-cyan-400 transition-colors"><span class="sr-only">LinkedIn</span><i data-lucide="linkedin" class="w-6 h-6"></i></a>
+                    <a href="#" class="text-slate-400 hover:text-cyan-400 transition-colors"><span class="sr-only">Twitter</span><i data-lucide="twitter" class="w-6 h-6"></i></a>
+                </div>
+            </div>
+            <div class="border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-slate-500">
+                <p>&copy; <span id="current-year"></span> MD Nure Alam. All rights reserved.</p>
+                <p class="mt-2 md:mt-0">Designed with CyberSec Esthetics</p>
+            </div>
         </div>
     </footer>
 
-    <!-- REMOVED: Project Modal -->
-
-    <!-- NEW: Image Modal for Certificates --><div id="imageModal" class="modal">
-        <div class="modal-content" style="max-width: 800px; padding: 12px; background-color: #0f172a;"> <!-- slate-900 --><div class="modal-header" style="border: none; padding: 0;">
-                <!-- Close button is positioned by the parent's flex-end --><span class="modal-close" id="imageModalCloseBtn" style="align-self: flex-end;">&times;</span>
-            </div>
-            <div class="modal-body" style="padding: 0;">
-                <img id="modalImage" src="" alt="Certificate Image" class="w-full h-auto rounded-lg">
-            </div>
+    <!-- Image Modal -->
+    <div id="imageModal" class="modal p-4">
+        <div class="modal-content bg-slate-800 rounded-2xl overflow-hidden max-w-3xl w-full shadow-2xl border border-slate-700 relative">
+            <button id="imageModalCloseBtn" class="absolute top-4 right-4 bg-slate-900/50 hover:bg-slate-900 text-white rounded-full p-2 transition-colors z-50">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+            <img id="modalImage" src="" alt="Certificate" class="w-full h-auto block">
         </div>
     </div>
 
-    <script type="module">
-        // Set current year in footer
-        document.getElementById('current-year').textContent = new Date().getFullYear();
+    <!-- MAIN JAVASCRIPT -->
+    <script>
+        // 1. Initialize Lucide Icons
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
 
-        // Smooth scroll for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
+        // 2. Mobile Menu Logic
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+
+        if(mobileMenuBtn && mobileMenu) {
+            mobileMenuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('open');
+                const isOpen = mobileMenu.classList.contains('open');
+                mobileMenuBtn.innerHTML = isOpen ? '<i data-lucide="x"></i>' : '<i data-lucide="menu"></i>';
+                lucide.createIcons();
+            });
+
+            mobileLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.remove('open');
+                    mobileMenuBtn.innerHTML = '<i data-lucide="menu"></i>';
+                    lucide.createIcons();
                 });
             });
-        });
+        }
 
-        // --- SCROLL REVEAL SCRIPT ---
+        // 3. Modal Logic
+        const modal = document.getElementById('imageModal');
+        const modalImg = document.getElementById('modalImage');
+        const closeBtn = document.getElementById('imageModalCloseBtn');
+
+        window.showImageModal = function(src) {
+            if(modal && modalImg) {
+                modalImg.src = src;
+                modal.style.display = "flex";
+            }
+        }
+
+        if(closeBtn) {
+            closeBtn.onclick = function() { modal.style.display = "none"; }
+        }
+        
+        window.onclick = function(event) {
+            if (event.target == modal) modal.style.display = "none";
+        }
+
+        // 4. Footer Year
+        const yearSpan = document.getElementById('current-year');
+        if(yearSpan) yearSpan.textContent = new Date().getFullYear();
+
+        // 5. Scroll Reveal Logic
         const revealElements = document.querySelectorAll('.scroll-reveal');
-        const revealObserver = new IntersectionObserver((entries) => {
+        const revealObserver = new IntersectionObserver((entries, observer) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
-                    revealObserver.unobserve(entry.target); // Animate only once
+                    observer.unobserve(entry.target); 
                 }
             });
-        }, {
-            threshold: 0.1 // Trigger when 10% of the element is visible
-        });
-        revealElements.forEach(el => {
-            revealObserver.observe(el);
-        });
+        }, { threshold: 0.1 });
+        revealElements.forEach(el => revealObserver.observe(el));
 
-        // --- MODAL SCRIPT ---
-        
-        // Global close
-        window.onclick = (event) => {
-            // REMOVED: Project modal check
-            // MODIFIED: Added check for imageModal
-            if (event.target == imageModal) {
-                imageModal.style.display = 'none';
-            }
-        };
-
-        // REMOVED: window.showProjectModal function
-
-        // --- NEW SCRIPT (FOR IMAGE MODAL) ---
-        const imageModal = document.getElementById('imageModal');
-        const imageModalCloseBtn = document.getElementById('imageModalCloseBtn');
-        const modalImage = document.getElementById('modalImage');
-
-        if (imageModalCloseBtn) {
-            imageModalCloseBtn.onclick = () => imageModal.style.display = 'none';
-        }
-
-        // Attach showImageModal to window
-        window.showImageModal = function(imageUrl) {
-            if (modalImage && imageModal) {
-                modalImage.src = imageUrl;
-                imageModal.style.display = 'block';
+        // 6. Typewriter Effect
+        const typeWriterElements = document.querySelectorAll('.typewriter-text');
+        function typeWriter(element, text, i = 0) {
+            if (i < text.length) {
+                element.innerHTML += text.charAt(i);
+                // Changed speed from 20 to 50 for slower typing
+                setTimeout(() => typeWriter(element, text, i + 1), 50); 
+            } else {
+                element.classList.remove('typing-cursor'); 
             }
         }
-        
-
-        // --- TYPEWRITER SCRIPT ---
-        document.addEventListener('DOMContentLoaded', () => {
-            const aboutSection = document.getElementById('about');
-            const textElements = document.querySelectorAll('.typewriter-text');
-            
-            if (!aboutSection || textElements.length === 0) return;
-
-            // 1. Store original innerHTML (to restore formatting) and textContent (for typing)
-            const originals = Array.from(textElements).map(el => ({
-                element: el,
-                html: el.innerHTML,
-                text: el.textContent.trim().replace(/\s+/g, ' ') // Standardize whitespace
-            }));
-
-            // 2. Clear content
-            originals.forEach(o => o.element.innerHTML = '');
-
-            // 3. Set up the typing function
-            const typingSpeed = 20; // ms per character
-            const paraDelay = 300; // ms between paragraphs
-
-            async function startTyping() {
-                for (let i = 0; i < originals.length; i++) {
-                    const current = originals[i];
-                    current.element.classList.add('typing');
-                    
-                    const textToType = current.text;
-                    
-                    // Type out the text (using textContent)
-                    for (let j = 0; j < textToType.length; j++) {
-                        current.element.textContent += textToType[j];
-                        await new Promise(resolve => setTimeout(resolve, typingSpeed));
-                    }
-                    
-                    current.element.classList.remove('typing');
-                    
-                    // Restore original innerHTML to get formatting back
-                    current.element.innerHTML = current.html;
-
-                    // Wait before starting next paragraph
-                    if (i < originals.length - 1) {
-                        await new Promise(resolve => setTimeout(resolve, paraDelay));
+        const typeObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const el = entry.target;
+                    const text = el.getAttribute('data-text');
+                    if (text && !el.classList.contains('typed')) {
+                        el.classList.add('typed'); 
+                        el.classList.add('typing-cursor');
+                        typeWriter(el, text);
                     }
                 }
-            }
-
-            // 4. Set up the observer
-            const typewriterObserver = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        startTyping();
-                        typewriterObserver.unobserve(entry.target); // Animate only once
-                    }
-                });
-            }, {
-                threshold: 0.5 // Trigger when 50% of the section is visible
             });
+        }, { threshold: 0.5 });
+        typeWriterElements.forEach(el => typeObserver.observe(el));
 
-            typewriterObserver.observe(aboutSection);
-        });
-
-
-        // --- HOME SECTION STICKY SCROLL ANIMATION ---
+        // 7. Home Animation Logic
         const homeStickyParent = document.getElementById('home-sticky-parent');
         const homeTextContent = document.getElementById('home-text-content');
         const homeImageWrapper = document.getElementById('home-image-wrapper');
-        
-        // Linear interpolation function
         const lerp = (a, b, t) => a * (1 - t) + b * t;
 
         function handleHomeAnimation() {
             if (!homeStickyParent || !homeTextContent || !homeImageWrapper) return;
-
             const parentRect = homeStickyParent.getBoundingClientRect();
-            const scrollY = window.scrollY;
-            const parentTop = homeStickyParent.offsetTop;
-            const parentHeight = homeStickyParent.offsetHeight;
-            const windowHeight = window.innerHeight;
-            const windowWidth = window.innerWidth;
+            const startY = homeStickyParent.offsetTop;
+            const dist = Math.max(1, homeStickyParent.offsetHeight - window.innerHeight);
+            const percent = Math.max(0, Math.min(1, (window.scrollY - startY) / dist));
 
-            // Calculate scroll percentage within the parent container
-            // We want the animation to finish when the *bottom* of the parent is 1 screen height away
-            const scrollDistance = parentHeight - windowHeight;
-            let scrollPercent = (scrollY - parentTop) / scrollDistance;
-            let clampedPercent = Math.max(0, Math.min(1, scrollPercent));
-
-            if (windowWidth >= 768) { // md breakpoint (desktop)
-                // Animate from stacked-center to side-by-side
+            if (window.innerWidth >= 768) {
+                homeTextContent.style.top = lerp(35, 45, percent) + "%";
+                homeTextContent.style.left = lerp(50, 25, percent) + "%"; 
+                homeTextContent.style.transform = "translate(-50%, -50%)";
+                homeTextContent.style.opacity = 1;
                 
-                // Initial state (stacked)
-                const textTop_start = 30; // 30% from top (Was 35%)
-                const textLeft_start = 50; // 50% from left
-                const imageTop_start = 65; // 65% from top
-                const imageLeft_start = 50; // 50% from left
-
-                // Final state (side-by-side)
-                const textTop_final = 45; // 45% from top (Was 50%)
-                const textLeft_final = 35; // ~33.3% for 2/3 block
-                const imageTop_final = 50; // 50% from top
-                const imageLeft_final = 80; // ~83.3% for 1/3 block
-
-                // Interpolate values
-                const textTop = lerp(textTop_start, textTop_final, clampedPercent);
-                const textLeft = lerp(textLeft_start, textLeft_final, clampedPercent);
-                const imageTop = lerp(imageTop_start, imageTop_final, clampedPercent);
-                const imageLeft = lerp(imageLeft_start, imageLeft_final, clampedPercent);
-
-                // Apply styles
-                homeTextContent.style.top = `${textTop}%`;
-                homeTextContent.style.left = `${textLeft}%`;
-                homeTextContent.style.transform = 'translate(-50%, -50%)';
-
-                homeImageWrapper.style.top = `${imageTop}%`;
-                homeImageWrapper.style.left = `${imageLeft}%`;
-                homeImageWrapper.style.transform = 'translate(-50%, -50%)';
-                homeImageWrapper.style.opacity = '1';
-
-            } else { // Mobile
-                // Stay stacked, move up slightly and fade
-                const textTop_start = 30; // (Was 35%)
-                const textTop_final = 25; // Move up
+                homeImageWrapper.style.top = lerp(60, 50, percent) + "%";
+                homeImageWrapper.style.left = lerp(50, 75, percent) + "%"; 
+                homeImageWrapper.style.transform = "translate(-50%, -50%)";
+                homeImageWrapper.style.opacity = 1;
+            } else {
+                homeTextContent.style.top = "35%";
+                homeTextContent.style.left = "50%";
+                homeTextContent.style.transform = "translate(-50%, -50%)";
+                homeTextContent.style.opacity = 1 - (percent * 2.5);
                 
-                const imageTop_start = 65;
-                const imageTop_final = 50; // Move up
+                homeImageWrapper.style.top = "60%";
+                homeImageWrapper.style.left = "50%";
+                homeImageWrapper.style.transform = "translate(-50%, -50%)";
+                homeImageWrapper.style.opacity = 1 - (percent * 2.5);
+            }
+        }
+        window.addEventListener('scroll', handleHomeAnimation);
+        window.addEventListener('resize', handleHomeAnimation);
+        handleHomeAnimation();
 
-                const textTop = lerp(textTop_start, textTop_final, clampedPercent);
-                const imageTop = lerp(imageTop_start, imageTop_final, clampedPercent);
-                const opacity = 1 - (clampedPercent * 1.5); // Fade out
+        // 8. GEMINI API INTEGRATION ✨
+        // Initialize API key as empty string as per instructions
+        const apiKey = ""; 
 
-                homeTextContent.style.top = `${textTop}%`;
-                homeTextContent.style.left = '50%';
-                homeTextContent.style.transform = 'translate(-50%, -50%)';
-                homeTextContent.style.opacity = opacity;
+        async function analyzeThreat() {
+            const input = document.getElementById('aiInput').value;
+            const outputContainer = document.getElementById('aiOutputContainer');
+            const output = document.getElementById('aiOutput');
+            const btn = document.getElementById('analyzeBtn');
+            const status = document.getElementById('statusText');
+            const userKey = document.getElementById('apiKeyInput').value;
 
-                homeImageWrapper.style.top = `${imageTop}%`;
-                homeImageWrapper.style.left = '50%';
-                homeImageWrapper.style.transform = 'translate(-50%, -50%)';
-                homeImageWrapper.style.opacity = opacity;
+            // Basic client-side validation for empty input
+            if (!input.trim()) {
+                alert("Please enter some text to analyze.");
+                return;
+            }
+
+            // Use user provided key if available, otherwise fallback to default (which is empty here)
+            const finalKey = userKey || apiKey;
+
+            if (!finalKey) {
+                alert("Please enter an API Key to use this feature.");
+                return;
+            }
+
+            // UI Loading State
+            btn.disabled = true;
+            btn.innerHTML = '<i data-lucide="loader-2" class="animate-spin w-4 h-4"></i> Scanning...';
+            status.innerText = "Connecting to Gemini Neural Network...";
+            outputContainer.classList.add('hidden');
+            lucide.createIcons();
+
+            try {
+                const prompt = `You are a cybersecurity expert. Analyze the following text (which could be a log entry, an email, code, or a message). identify potential threats, vulnerabilities, or indicators of compromise. 
+                
+                If it is code, look for security flaws (XSS, SQLi, etc.). 
+                If it is an email/message, look for phishing/social engineering indicators.
+                If it is a log, explain what happened.
+                
+                Provide a concise, professional assessment in Markdown format.
+                
+                Text to analyze:
+                ${input}`;
+
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${finalKey}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        contents: [{
+                            parts: [{ text: prompt }]
+                        }]
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`API Error: ${response.status}`);
+                }
+
+                const data = await response.json();
+                const text = data.candidates?.[0]?.content?.parts?.[0]?.text || "No analysis could be generated.";
+
+                // Render Markdown
+                output.innerHTML = marked.parse(text);
+                outputContainer.classList.remove('hidden');
+                status.innerText = "Scan Complete. Threats Analyzed.";
+                status.classList.add('text-green-400');
+
+            } catch (error) {
+                console.error("AI Error:", error);
+                outputContainer.classList.remove('hidden');
+                output.innerHTML = `<span class="text-red-400 font-bold">Error:</span> Failed to connect to analysis engine. ${error.message}`;
+                status.innerText = "Connection Failed.";
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i data-lucide="scan-line" class="w-4 h-4"></i> Run Analysis ✨';
+                lucide.createIcons();
             }
         }
 
-        // Run on load and on scroll
-        window.addEventListener('scroll', handleHomeAnimation);
-        window.addEventListener('resize', handleHomeAnimation);
-        // Run once on load
-        document.addEventListener('DOMContentLoaded', handleHomeAnimation);
-
     </script>
 </body>
-
 </html>
